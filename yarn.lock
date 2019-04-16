@@ -180,6 +180,13 @@
     "@types/vinyl-fs" "*"
     chokidar "^2.1.2"
 
+"@types/linq@^2.2.33":
+  version "2.2.33"
+  resolved "https://registry.yarnpkg.com/@types/linq/-/linq-2.2.33.tgz#79e9726b8fb02469e5a8941c58a9fb4f95dc2b8c"
+  integrity sha1-eelya4+wJGnlqJQcWKn7T5XcK4w=
+  dependencies:
+    linq "*"
+
 "@types/minimatch@*":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -222,6 +229,18 @@
   integrity sha512-hrT6xg16CWSmndZqOTJ6BGIn2abKyTw0B58bI+7ioUoj3Sma6u8ftZ1DTI2yCaJamOVGLOnQWiPH3a74+EaqTA==
   dependencies:
     "@types/node" "*"
+
+"@types/yargs-parser@*":
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-13.0.0.tgz#453743c5bbf9f1bed61d959baab5b06be029b2d0"
+  integrity sha512-wBlsw+8n21e6eTd4yVv8YD/E3xq0O6nNnJIquutAsFGE7EyMKz7W6RNT6BRu1SmdgmlCZ9tb0X+j+D6HGr8pZw==
+
+"@types/yargs@^13.0.0":
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-13.0.0.tgz#d2acb3bec0047d8f648ebacdab6b928a900c42c4"
+  integrity sha512-hY0o+kcz9M6kH32NUeb6VURghqMuCVkiUx+8Btsqhj4Hhov/hVGUx9DmBJeIkzlp1uAQK4wngQBCjqWdUUkFyA==
+  dependencies:
+    "@types/yargs-parser" "*"
 
 JSONStream@^1.0.4:
   version "1.3.5"
@@ -2239,6 +2258,11 @@ liftoff@^3.1.0:
     object.map "^1.0.0"
     rechoir "^0.6.2"
     resolve "^1.1.7"
+
+linq@*, linq@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/linq/-/linq-3.2.0.tgz#622bc5b47fe360e227432ff4978ff55d36929558"
+  integrity sha512-rdmaLOf2tSCzZ75scdjjN/LVHGZzRu48ql9LdxppQec/pKpPtf8jlMDlPBX3rQnLMcGPtAx8Lel6YbF7jND70g==
 
 load-json-file@^1.0.0:
   version "1.1.0"
