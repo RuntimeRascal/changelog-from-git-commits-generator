@@ -13,7 +13,7 @@
         "prepublish": "npm run build",
         "pretest": "npm run build",
         "pub": "npm version patch && npm publish && git push --follow-tags",
-        "test": "./node_modules/.bin/mocha test/sequence.ts"
+        "test": "./node_modules/.bin/mocha test/*.spec.ts"
     },
     "config":
     {
@@ -68,6 +68,7 @@
         "@types/gulp": "^4.0.6",
         "@types/linq": "^2.2.33",
         "@types/mocha": "^5.2.6",
+        "@types/yargs": "^13.0.0",
         "chai": "^4.2.0",
         "commitizen": "^3.0.7",
         "commitlint-config-cz": "^0.11.1",

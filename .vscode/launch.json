@@ -36,7 +36,7 @@
         "name": "Cli (current)",
         "type": "node",
         "request": "launch",
-        "args": [ "${relativeFile}", "--help", "--verbose" ],
+        "args": [ "${relativeFile}", "--file=./testing/CHANGELOG.md", "--verbose" ],
         "runtimeArgs": [ "--nolazy", "-r", "ts-node/register", ],
         "sourceMaps": true,
         "cwd": "${workspaceRoot}",

@@ -1,23 +1,18 @@
-export enum RepoType
-{
-    git,
-    vsts
+export declare enum RepoType {
+    git = 0,
+    vsts = 1
 }
-
-export type version = {
+export declare type version = {
     major: number;
     minor: number;
     build: number;
     revision: number;
-}
-
-export type WorkItem = {
+};
+export declare type WorkItem = {
     display: string;
     id: number;
-}
-
-export interface IOptions
-{
+};
+export interface IOptions {
     patch?: boolean;
     major?: boolean;
     minor?: boolean;
@@ -28,21 +23,17 @@ export interface IOptions
     projectName?: string;
     showUnparsableCommit?: boolean;
 }
-
-export interface IVersion
-{
+export interface IVersion {
     major: number;
     minor: number;
     build: number;
     revision: number;
-    valid (): boolean;
-    parse ( version: string ): version;
-    compare ( version: IVersion ): number;
-    toString (): string;
+    valid(): boolean;
+    parse(version: string): version;
+    compare(version: IVersion): number;
+    toString(): string;
 }
-
-export interface ICommit
-{
+export interface ICommit {
     hash?: string;
     hashAbbrev?: string;
     subject?: string;

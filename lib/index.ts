@@ -1,87 +1,55 @@
 import { gitAllCommits } from './git';
-import { pathExists, writeFileSync, ensureDirSync } from 'fs-extra';
-import { from as linq } from 'linq';
+import { writeFileSync, ensureDirSync, existsSync } from 'fs-extra';
 import { getMarkdown } from './writer';
 import { join, dirname } from 'path';
-import { IOptions, RepoType } from './interface';
+import { IOptions, RepoType, ICommit } from './interface';
+import { getOptionsFromPackage } from './package';
+import * as chalkDep from 'chalk';
+const chalk: chalkDep.Chalk = chalkDep.default.constructor( { enabled: true, level: 1 } );
 
-async function getPackageJson ()
-{
-    var userPackagePath = process.cwd() + '/package.json';
-    if ( await pathExists( userPackagePath ) )
-        return require( userPackagePath );
-
-    return null;
-}
-
-async function generate ( options?: IOptions ): Promise<string>
-{
-    if ( !options )
-        options = { major: false, minor: false, patch: false, repoUrl: '', repoType: RepoType.git, file: 'CHANGELOG.md' };
-
-    let version = '0.0.0';
-    let userPackage = await getPackageJson();
-    if ( userPackage )
-    {
-        if ( !options.repoUrl )
-        {
-            var url: string = userPackage.repository && userPackage.repository.url;
-            if ( typeof url == 'string' )
-                options.repoUrl = url;
-
-            if ( options.repoUrl.startsWith( 'git+' ) )
-                options.repoUrl = options.repoUrl.substring( 4 );
-            if ( options.repoUrl.endsWith( '.git' ) )
-                options.repoUrl = options.repoUrl.substring( 0, options.repoUrl.length - 4 );
-
-            var repotype = userPackage.repository && userPackage.repository.type;
-            if ( typeof url == 'string' )
-            {
-                if ( repotype in RepoType )
-                    options.repoType = repotype;
-            }
-        }
-
-        if ( userPackage.version )
-            version = userPackage.version;
-    }
-
-    const commits = gitAllCommits( version );
-    if ( commits && commits.length < 1 )
-    {
-        console.log( `found no commits to generate from` );
-        return;
-    }
-
-    console.log( `parsed commits gotten: ${ linq( commits ).count( c => !c.unparsable ) }` );
-    console.log( `unparsable commits gotten: ${ linq( commits ).count( c => c.unparsable ) }` );
-
-    let md = getMarkdown( options, version, commits );
-    let resultingPath = join( process.cwd(), options.file );
-    var resultingDir = dirname( resultingPath );
-    if ( await pathExists( resultingDir ) )
-    {
-        writeFileSync( resultingPath, md );
-    }
-    else
-    {
-        ensureDirSync( resultingDir );
-        writeFileSync( resultingPath, md );
-    }
-
-    return Promise.resolve( '' );
-}
-
-export { generate, IOptions };
-
-//generate( { patch: false, major: false, minor: false, repoUrl: '' } );
-var options = {
+const defaultOptions = {
     major: false,
     minor: false,
     patch: false,
     repoUrl: '',
     repoType: RepoType.git,
-    file: './temp/CHANGELOG.md'
+    file: 'CHANGELOG.md',
+    version: '0.0.0'
 };
 
-generate( options );
+const log = ( message: string ) => console.info( `[changelog-generator] => ${ message }` );
+
+function generate ( options: IOptions = defaultOptions, commitsList: ICommit[] = null ): Promise<string>
+{
+    getOptionsFromPackage( options );
+
+    const commits = commitsList || gitAllCommits( options );
+    if ( commits && commits.length < 1 )
+    {
+        log( 'found no commits to generate from' );
+        return;
+    }
+
+    let changelogPath = join( process.cwd(), options.file );
+    var changelogDirectoryPath = dirname( changelogPath );
+    if ( !existsSync( changelogDirectoryPath ) )
+    {
+        log( `creating changelog directory at: '${ chalk.gray( changelogDirectoryPath ) }'` );
+        ensureDirSync( changelogDirectoryPath );
+    }
+    let md = getMarkdown( options, commits );
+    writeFileSync( changelogPath, md.trim() );
+
+    return Promise.resolve( changelogPath );
+}
+
+export default generate;
+
+// generate( {
+//     major: false,
+//     minor: false,
+//     patch: false,
+//     repoUrl: '',
+//     repoType: RepoType.git,
+//     file: './CHANGELOG.md'
+// } );

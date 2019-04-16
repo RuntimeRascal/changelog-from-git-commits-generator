@@ -22,6 +22,7 @@ var __spread = (this && this.__spread) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var child_process_1 = require("child_process");
 var linq_1 = require("linq");
+var version_1 = require("./version");
 /**
     %H 	    Commit hash
     %h 	    Abbreviated commit hash
@@ -68,109 +69,6 @@ var COMMIT_DETAILS_FORMAT = FORMATS.HASH + "%H" + FORMATS.NL
     + (FORMATS.SUBJECT + "%s" + FORMATS.NL)
     + (FORMATS.BODY + "%b" + FORMATS.BODY_END + FORMATS.NL)
     + ("" + FORMATS.COMMIT_DETAILS_SEPARATOR);
-var Version = /** @class */ (function () {
-    function Version(version) {
-        if (version === void 0) { version = null; }
-        if (version != null)
-            this.parse(version.trim());
-        else
-            this._version = { major: -1, minor: -1, build: -1, revision: -1 };
-    }
-    Object.defineProperty(Version.prototype, "major", {
-        get: function () { return this._version.major; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Version.prototype, "minor", {
-        get: function () { return this._version.minor; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Version.prototype, "build", {
-        get: function () { return this._version.build; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Version.prototype, "revision", {
-        get: function () { return this._version.revision; },
-        enumerable: true,
-        configurable: true
-    });
-    Version.prototype.valid = function () {
-        if (this.major == -1)
-            return false;
-        return true;
-    };
-    Version.prototype.parse = function (version) {
-        this._version = { major: -1, minor: -1, build: -1, revision: -1 };
-        if (!version.match(/^[0-9,.]*$/g))
-            return this._version;
-        if (version.length > 0) {
-            var tokens = version.split('.');
-            this._version.major = tokens.length >= 1 ? +tokens[0] : -1;
-            this._version.minor = tokens.length >= 2 ? +tokens[1] : -1;
-            this._version.build = tokens.length >= 3 ? +tokens[2] : -1;
-            this._version.revision = tokens.length >= 4 ? +tokens[3] : -1;
-        }
-        return this._version;
-    };
-    /**
-     * compare this version with another
-     *
-     * @param {Version} version
-     * @returns {number} will return 0 if both versions are equal or will be truthy or 1 if left is greater than right
-     * else will return -1
-     * @memberof Version
-     */
-    Version.prototype.compare = function (version) {
-        if (this.major > version.major) {
-            return 1;
-        }
-        else if (this.major == version.major) {
-            if (this.minor > version.minor) {
-                return 1;
-            }
-            else if (this.minor == version.minor) {
-                if (this.build > version.build) {
-                    return 1;
-                }
-                else if (this.build == version.build) {
-                    if (this.revision > version.revision) {
-                        return 1;
-                    }
-                    else if (this.revision == version.revision) {
-                        return 0;
-                    }
-                    else {
-                        return -1;
-                    }
-                }
-                else {
-                    return -1;
-                }
-            }
-            else {
-                return -1;
-            }
-        }
-        else {
-            return -1;
-        }
-    };
-    Version.prototype.toString = function () {
-        if (this.revision != -1)
-            return this.major + "." + this.minor + "." + this.build + "." + this.revision;
-        if (this.build != -1)
-            return this.major + "." + this.minor + "." + this.build;
-        if (this.minor != -1)
-            return this.major + "." + this.minor;
-        if (this.major != -1)
-            return "" + this.major;
-        return '0.0.0';
-    };
-    return Version;
-}());
-exports.Version = Version;
 var Commit = /** @class */ (function () {
     function Commit(hash, hashAbbrev, subject, body, type, category, author, authorDate, authorEmail, committer, committerDate, committerEmail, raw, workItems, unparsable, tag, version) {
         this.hash = hash;
@@ -190,13 +88,11 @@ var Commit = /** @class */ (function () {
         this.unparsable = unparsable;
         this.tag = tag;
         this.version = version;
-        //if ( hash ) this.hash = null;
         if (!workItems)
             this.workItems = new Array();
     }
     return Commit;
 }());
-exports.Commit = Commit;
 function parseInCommit(assign, commit, tag, rawLines) {
     var line = linq_1.from(rawLines).firstOrDefault(function (l) { return l.startsWith(tag); });
     if (line) {
@@ -208,30 +104,37 @@ function gitClosestTag() {
     return child_process_1.execSync('git describe --tags --abbrev=0').toString();
 }
 exports.gitClosestTag = gitClosestTag;
-function gitAllCommits(latestVersion) {
+function gitAllCommits(options) {
     var rawGitTag = child_process_1.execSync('git tag --list').toString();
     var tags = rawGitTag.split('\n').filter(function (t) { return t; });
     var commits = [];
-    for (var index = 0; index < tags.length; index++) {
-        var latest = 'HEAD';
-        var to = latest;
-        var from = tags[index];
-        var next = index + 1;
-        if (next < tags.length)
-            to = tags[index + 1];
-        var newCommits = gitCommits(from, to, latestVersion);
+    if (tags.length == 0) {
+        var newCommits = gitCommits(null, null, options.version);
         commits.push.apply(commits, __spread(newCommits));
+    }
+    else {
+        for (var index = 0; index < tags.length; index++) {
+            var latest = 'HEAD';
+            var to = latest;
+            var from = tags[index];
+            var next = index + 1;
+            if (next < tags.length)
+                to = tags[index + 1];
+            var newCommits = gitCommits(from, to, options.version);
+            commits.push.apply(commits, __spread(newCommits));
+        }
     }
     return commits;
 }
 exports.gitAllCommits = gitAllCommits;
 function gitCommits(from, to, latestVersion) {
-    var rawGitCommits = child_process_1.execSync("git log " + from + ".." + to + " -E --format=" + COMMIT_DETAILS_FORMAT, {
+    var range = from && to ? " " + from + ".." + to : '';
+    var rawGitCommits = child_process_1.execSync("git log" + range + " -E --format=" + COMMIT_DETAILS_FORMAT, {
         maxBuffer: Number.MAX_SAFE_INTEGER
     }).toString();
     if (!rawGitCommits)
         return [];
-    var version = to;
+    var version = to || latestVersion;
     if (version == 'HEAD')
         version = latestVersion;
     else {
@@ -240,7 +143,7 @@ function gitCommits(from, to, latestVersion) {
         if (versionMatch && versionMatch[0])
             version = versionMatch[0];
     }
-    var ver = new Version(version);
+    var ver = new version_1.default(version);
     var commits = rawGitCommits
         .split(FORMATS.COMMIT_DETAILS_SEPARATOR)
         .map(function (raw) {
@@ -248,7 +151,7 @@ function gitCommits(from, to, latestVersion) {
             return null;
         var lines = raw.split('\n');
         var commit = new Commit();
-        commit.tag = to;
+        commit.tag = to || latestVersion;
         commit.version = ver;
         for (var key in FORMATS)
             raw = raw.replace(FORMATS[key], '');

@@ -1,3 +1,3 @@
-import { Commit } from "./git";
-declare function getMarkdown(repo: string, version: string, commits: Commit[]): string;
+import { ICommit, IOptions } from './interface';
+declare function getMarkdown(options: IOptions, commits: ICommit[]): string;
 export { getMarkdown };

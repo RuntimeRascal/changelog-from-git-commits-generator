@@ -1,6 +1,6 @@
 import { execSync } from 'child_process';
 import { from as linq } from 'linq';
-import { IVersion, ICommit, WorkItem } from './interface';
+import { IVersion, ICommit, WorkItem, IOptions } from './interface';
 import Version from './version';
 
 /**
@@ -78,7 +78,7 @@ function gitClosestTag ()
     return execSync( 'git describe --tags --abbrev=0' ).toString();
 }
 
-function gitAllCommits ( latestVersion: string )
+function gitAllCommits ( options: IOptions )
 {
     const rawGitTag = execSync( 'git tag --list' ).toString();
     var tags = rawGitTag.split( '\n' ).filter( t => t );
@@ -86,7 +86,7 @@ function gitAllCommits ( latestVersion: string )
 
     if ( tags.length == 0 )
     {
-        var newCommits = gitCommits( null, null, latestVersion );
+        var newCommits = gitCommits( null, null, options.version );
         commits.push( ...newCommits );
     } else
     {
@@ -99,7 +99,7 @@ function gitAllCommits ( latestVersion: string )
             if ( next < tags.length )
                 to = tags[ index + 1 ];
 
-            var newCommits = gitCommits( from, to, latestVersion );
+            var newCommits = gitCommits( from, to, options.version );
             commits.push( ...newCommits );
         }
     }

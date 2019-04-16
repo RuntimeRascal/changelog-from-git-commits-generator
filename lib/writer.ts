@@ -1,6 +1,6 @@
 import { from as linq } from 'linq';
 import { format } from 'util';
-import { ICommit, IVersion, IOptions, VersionCommitGroup } from './interface';
+import { ICommit, IOptions } from './interface';
 
 var links = {
     git: {
@@ -16,77 +16,45 @@ var links = {
     }
 }
 
-function groupBy ( list, keyGetter )
-{
-    const map = new Map<IVersion | string, ICommit[]>();
-    list.forEach( ( item ) =>
-    {
-        const key = keyGetter( item );
-        const collection = map.get( key );
-        if ( !collection )
-        {
-            map.set( key, [ item ] );
-        } else
-        {
-            collection.push( item );
-        }
-    } );
-
-    let group: VersionCommitGroup[] = [];
-    for ( var key of map.keys() )
-        group.push( { key: key, value: map.get( key ) } );
-
-    return group;
-
-}
-
-function getMarkdown ( options: IOptions, version: string, commits: ICommit[] )
+function getMarkdown ( options: IOptions, commits: ICommit[] )
 {
     let content: string[] = [];
-    content.push( `# ${ format( links[ options.repoType ].home, options.repoUrl ) }` );
+    content.push( `# [${ options.projectName || 'Project Name' }](${ format( links[ options.repoType ].home, options.repoUrl ) })    ` );
     content.push( `` );
 
-    // const commitsUrl = `${ repo }/_apis/git/repositories/application/commits?api-version=5.0`;
-    // const diffUrl = `${ repo }/_apis/git/repositories/application/diffs/commits?api-version=5.0`;
-    // const refListUrl = `${ repo }/_apis/git/repositories/application/refs?api-version=5.0`;
-
-    let groups = groupBy( linq( commits ).where( c => !c.unparsable && c.hash != null ).toArray(), c => c.version );
-    groups = groups.sort( ( a, b ) =>
-    {
-        return ( b.key as IVersion ).compare( a.key as IVersion );
-    } )
-
-    console.log( `keys: \n${ groups.map( g => g.key.toString() ).join( '\n' ) }` );
-    groups.forEach( group =>
-    {
-        let key = group.key;
-        // const tagUrl = `${ options.repoUrl }/_git/application?version=GT${ key }`;
-        // const diffUrl = `${ options.repoUrl }/_apis/git/repositories/application/diffs/commits?baseVersion=1.0.1-second&baseVersionType=tag&targetVersion=1.0.10&targetVersionType=tag&api-version=5.0`;
-
-        content.push( `` );
-        content.push( `## [${ key }](${ format( links[ options.repoType ].tag, options.repoUrl, key ) }) (2019-04-09) ` );
-
-        let types = groupBy( group.value, c => c.type );
-        types.forEach( t =>
+    linq( commits )
+        .where( c => !c.unparsable && c.hash != null )  // filter out unparasable
+        .groupBy( c => c.version )                      // we group by version first
+        .select( group => { return { key: group.key(), value: group.toArray() } } )
+        .toArray()                                      // so we get js array sort()
+        .sort( ( a, b ) => b.key.compare( a.key ) )     // sort version largest to smallest
+        .forEach( group =>
         {
+            let key = group.key;
             content.push( `` );
-            content.push( `- ### ${ t.key }:` );
+            content.push( `## [${ key }](${ format( links[ options.repoType ].tag, options.repoUrl, key ) }) (${ ( new Date() ).toLocaleString() }) ` );
 
-            t.value
-                .forEach( t =>
+            linq( group.value )
+                .groupBy( commit => commit.type )       // then we group by type
+                .forEach( byTypes =>
                 {
-                    content.push( `   - (${ t.category }) ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
-                    if ( t.workItems && t.workItems.length > 0 )
+                    content.push( `` );
+                    content.push( `- ### ${ byTypes.key() }:` );
+
+                    byTypes.forEach( t =>
                     {
-                        t.workItems.forEach( wi =>
+                        content.push( `   - (${ t.category }) ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
+                        if ( t.workItems && t.workItems.length > 0 )
                         {
-                            content.push( `      > - WORK ITEM: [${ wi.display }](${ format( links[ options.repoType ].issue, options.repoUrl, wi.id ) })` );
-                        } )
-                    }
+                            t.workItems.forEach( wi =>
+                            {
+                                content.push( `      > - WORK ITEM: [${ wi.display }](${ format( links[ options.repoType ].issue, options.repoUrl, wi.id ) })` );
+                            } )
+                        }
+                    } );
+                    content.push( `` );
                 } );
-            content.push( `` );
-        } )
-    } );
+        } );
 
     content.push( `` );
 
