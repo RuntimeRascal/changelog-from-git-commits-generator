@@ -80,16 +80,28 @@ function gitClosestTag ()
 
 function gitAllCommits ( options: IOptions )
 {
+
+
+    const allCommits = execSync( 'git log --reverse --oneline' ).toString();
+    const firstCommitLine = allCommits.split( '\n' ).filter( t => t )[ 0 ];
+    const firstCommitHash = firstCommitLine.split( ' ' )[ 0 ];
+
     const rawGitTag = execSync( 'git tag --list' ).toString();
     var tags = rawGitTag.split( '\n' ).filter( t => t );
     let commits: Commit[] = [];
 
     if ( tags.length == 0 )
     {
-        var newCommits = gitCommits( null, null, options.version );
-        commits.push( ...newCommits );
+        commits.push( ...gitCommits( null, null, options.version ) );
     } else
     {
+        let firstTag = tags[ 0 ];
+        if ( firstTag ) // make sure its not empty
+        {
+            // push commits from first commit to the first tag
+            commits.push( ...gitCommits( firstCommitHash, firstTag, options.version ) );
+        }
+
         for ( let index = 0; index < tags.length; index++ )
         {
             let latest = 'HEAD';
@@ -99,8 +111,7 @@ function gitAllCommits ( options: IOptions )
             if ( next < tags.length )
                 to = tags[ index + 1 ];
 
-            var newCommits = gitCommits( from, to, options.version );
-            commits.push( ...newCommits );
+            commits.push( ...gitCommits( from, to, options.version ) );
         }
     }
 

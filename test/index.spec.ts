@@ -21,7 +21,9 @@ describe( 'index', () =>
         let resultingFile = await generate( { file: CHANGELOG_NAME }, [ COMMIT1 ] );
         let markdown = readMarkdown().trim();
         expect( resultingFile.length ).to.be.greaterThan( 0 );
-        expect( markdown.indexOf( 'commit1' ) ).to.equal( 276 );
+        const index = markdown.indexOf( 'commit1' );
+        expect( index > 270 ).to.be.true;
+        expect( index < 280 ).to.be.true;
     } ).timeout( 0 );
 
     it( `expect sorted by version`, async () =>

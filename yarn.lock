@@ -180,13 +180,6 @@
     "@types/vinyl-fs" "*"
     chokidar "^2.1.2"
 
-"@types/linq@^2.2.33":
-  version "2.2.33"
-  resolved "https://registry.yarnpkg.com/@types/linq/-/linq-2.2.33.tgz#79e9726b8fb02469e5a8941c58a9fb4f95dc2b8c"
-  integrity sha1-eelya4+wJGnlqJQcWKn7T5XcK4w=
-  dependencies:
-    linq "*"
-
 "@types/minimatch@*":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -2259,7 +2252,7 @@ liftoff@^3.1.0:
     rechoir "^0.6.2"
     resolve "^1.1.7"
 
-linq@*, linq@^3.2.0:
+linq@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/linq/-/linq-3.2.0.tgz#622bc5b47fe360e227432ff4978ff55d36929558"
   integrity sha512-rdmaLOf2tSCzZ75scdjjN/LVHGZzRu48ql9LdxppQec/pKpPtf8jlMDlPBX3rQnLMcGPtAx8Lel6YbF7jND70g==
@@ -3844,7 +3837,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.4.3:
+typescript@^3.2.2:
   version "3.4.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.3.tgz#0eb320e4ace9b10eadf5bc6103286b0f8b7c224f"
   integrity sha512-FFgHdPt4T/duxx6Ndf7hwgMZZjZpB+U0nMNGVCYPq0rEzWKjEDobm4J6yb3CS7naZ0yURFqdw9Gwc7UOh/P9oQ==
@@ -4101,7 +4094,7 @@ yargs-unparser@1.5.0:
     lodash "^4.17.11"
     yargs "^12.0.5"
 
-yargs@13.2.2, yargs@^13.2.2:
+yargs@13.2.2:
   version "13.2.2"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.2.2.tgz#0c101f580ae95cea7f39d927e7770e3fdc97f993"
   integrity sha512-WyEoxgyTD3w5XRpAQNYUB9ycVH/PQrToaTXdYXRdOXvEy1l19br+VJsc0vcO8PTGg5ro/l/GY7F/JMEBmI0BxA==
