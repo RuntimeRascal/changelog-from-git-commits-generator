@@ -31,10 +31,20 @@ function generate(options, commitsList) {
     var changelogDirectoryPath = path_1.dirname(changelogPath);
     if (!fs_extra_1.existsSync(changelogDirectoryPath)) {
         log("creating changelog directory at: '" + chalk.gray(changelogDirectoryPath) + "'");
-        fs_extra_1.ensureDirSync(changelogDirectoryPath);
+        try {
+            fs_extra_1.ensureDirSync(changelogDirectoryPath);
+        }
+        catch (error) {
+            log(error);
+        }
     }
     var md = writer_1.getMarkdown(options, commits);
-    fs_extra_1.writeFileSync(changelogPath, md.trim());
+    try {
+        fs_extra_1.writeFileSync(changelogPath, md.trim());
+    }
+    catch (error) {
+        log(error);
+    }
     return Promise.resolve(changelogPath);
 }
 exports.default = generate;

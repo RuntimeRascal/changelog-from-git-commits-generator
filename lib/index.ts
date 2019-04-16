@@ -35,10 +35,24 @@ function generate ( options: IOptions = defaultOptions, commitsList: ICommit[] =
     if ( !existsSync( changelogDirectoryPath ) )
     {
         log( `creating changelog directory at: '${ chalk.gray( changelogDirectoryPath ) }'` );
-        ensureDirSync( changelogDirectoryPath );
+        try
+        {
+            ensureDirSync( changelogDirectoryPath );
+        } catch ( error )
+        {
+            log( error );
+        }
+
     }
     let md = getMarkdown( options, commits );
-    writeFileSync( changelogPath, md.trim() );
+
+    try
+    {
+        writeFileSync( changelogPath, md.trim() );
+    } catch ( error )
+    {
+        log( error );
+    }
 
     return Promise.resolve( changelogPath );
 }

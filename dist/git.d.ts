@@ -21,5 +21,5 @@ declare class Commit implements ICommit {
 }
 declare function gitClosestTag(): string;
 declare function gitAllCommits(options: IOptions): Commit[];
-declare function gitCommits(from: string, to: string, latestVersion: string): Commit[];
+declare function gitCommits(from: string, to: string, latestVersion: string, tag: string): Commit[];
 export { gitAllCommits, gitCommits, gitClosestTag };

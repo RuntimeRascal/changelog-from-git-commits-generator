@@ -82,9 +82,6 @@ function gitAllCommits ( options: IOptions )
 {
 
 
-    const allCommits = execSync( 'git log --reverse --oneline' ).toString();
-    const firstCommitLine = allCommits.split( '\n' ).filter( t => t )[ 0 ];
-    const firstCommitHash = firstCommitLine.split( ' ' )[ 0 ];
 
     const rawGitTag = execSync( 'git tag --list' ).toString();
     var tags = rawGitTag.split( '\n' ).filter( t => t );
@@ -92,33 +89,40 @@ function gitAllCommits ( options: IOptions )
 
     if ( tags.length == 0 )
     {
-        commits.push( ...gitCommits( null, null, options.version ) );
+        commits.push( ...gitCommits( null, null, options.version, options.version ) );
     } else
     {
-        let firstTag = tags[ 0 ];
-        if ( firstTag ) // make sure its not empty
+        const allCommits = execSync( 'git log --reverse --oneline' ).toString();
+        const firstCommitLine = allCommits.split( '\n' ).filter( t => t )[ 0 ];
+        const fromHash = firstCommitLine.split( ' ' )[ 0 ];
+
+        let toTag = tags[ 0 ];
+        if ( toTag ) // make sure its not empty
         {
             // push commits from first commit to the first tag
-            commits.push( ...gitCommits( firstCommitHash, firstTag, options.version ) );
+            commits.push( ...gitCommits( fromHash, toTag, '1.0.0', toTag ) );
         }
 
         for ( let index = 0; index < tags.length; index++ )
         {
-            let latest = 'HEAD';
-            let to = latest;
+            let version = options.version;
+            let to = 'HEAD';
             let from = tags[ index ];
             var next = index + 1;
             if ( next < tags.length )
+            {
                 to = tags[ index + 1 ];
+                version = to;
+            }
 
-            commits.push( ...gitCommits( from, to, options.version ) );
+            commits.push( ...gitCommits( from, to, version, to ) );
         }
     }
 
     return commits;
 }
 
-function gitCommits ( from: string, to: string, latestVersion: string )
+function gitCommits ( from: string, to: string, latestVersion: string, tag: string )
 {
     let range = from && to ? ` ${ from }..${ to }` : '';
     const rawGitCommits = execSync( `git log${ range } -E --format=${ COMMIT_DETAILS_FORMAT }`,
@@ -129,18 +133,12 @@ function gitCommits ( from: string, to: string, latestVersion: string )
     if ( !rawGitCommits )
         return [];
 
-    let version = to || latestVersion;
-    if ( version == 'HEAD' )
-        version = latestVersion;
-    else
-    {
-        let versionRegex = /(\d+\.(\d+\.?(\d+\.?(\d+)?)))/;
-        let versionMatch = versionRegex.exec( to );
-        if ( versionMatch && versionMatch[ 0 ] )
-            version = versionMatch[ 0 ];
-    }
+    let versionRegex = /(\d+\.(\d+\.?(\d+\.?(\d+)?)))/;
+    let versionMatch = versionRegex.exec( latestVersion );
+    if ( versionMatch && versionMatch[ 0 ] )
+        latestVersion = versionMatch[ 0 ];
 
-    let ver = new Version( version );
+    let ver = new Version( latestVersion );
 
     const commits = rawGitCommits
         .split( FORMATS.COMMIT_DETAILS_SEPARATOR )
@@ -150,7 +148,7 @@ function gitCommits ( from: string, to: string, latestVersion: string )
 
             let lines = raw.split( '\n' );
             let commit = new Commit();
-            commit.tag = to || latestVersion;
+            commit.tag = tag;
             commit.version = ver;
 
             for ( const key in FORMATS )

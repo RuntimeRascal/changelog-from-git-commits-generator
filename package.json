@@ -7,6 +7,7 @@
     "types": "dist/index.d.ts",
     "scripts":
     {
+        "cli": "node ./dist/cli.js --file=HELLO.md",
         "commit": "git add -A && git cz",
         "build": "./node_modules/.bin/tsc",
         "test-build": "./node_modules/.bin/tsc --project ./test",
@@ -30,7 +31,8 @@
     {
         "hooks":
         {
-            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+            "post-commit": ""
         }
     },
     "commitlint":
