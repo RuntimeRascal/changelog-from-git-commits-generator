@@ -23,6 +23,9 @@ function generate ( options: IOptions = defaultOptions, commitsList: ICommit[] =
 {
     getOptionsFromPackage( options );
 
+    if ( !options.file )
+        options.file = defaultOptions.file;
+
     const commits = commitsList || gitAllCommits( options );
     if ( commits && commits.length < 1 )
     {

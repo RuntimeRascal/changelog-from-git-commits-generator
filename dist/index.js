@@ -22,6 +22,8 @@ function generate(options, commitsList) {
     if (options === void 0) { options = defaultOptions; }
     if (commitsList === void 0) { commitsList = null; }
     package_1.getOptionsFromPackage(options);
+    if (!options.file)
+        options.file = defaultOptions.file;
     var commits = commitsList || git_1.gitAllCommits(options);
     if (commits && commits.length < 1) {
         log('found no commits to generate from');

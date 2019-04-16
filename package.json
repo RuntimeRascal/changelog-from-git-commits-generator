@@ -8,7 +8,8 @@
     "scripts":
     {
         "cli": "node ./dist/cli.js",
-        "commit": "git add -A && git cz",
+        "commit": "git cz",
+        "commitAll": "git add -A && git cz",
         "build": "./node_modules/.bin/tsc",
         "test-build": "./node_modules/.bin/tsc --project ./test",
         "prepublish": "npm run build",
@@ -32,7 +33,7 @@
         "hooks":
         {
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-            "post-commit": "node ./dist/cli.js"
+            "pre-applypatch": "node ./dist/cli.js && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md'"
         }
     },
     "commitlint":
