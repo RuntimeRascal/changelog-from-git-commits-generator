@@ -15,15 +15,46 @@ var defaultOptions = {
     repoUrl: '',
     repoType: interface_1.RepoType.git,
     file: 'CHANGELOG.md',
-    version: '0.0.0'
+    version: '0.0.0',
+    showFeat: true,
+    showFix: true,
+    showPerf: true,
+    showDocs: true,
+    showStyle: true,
+    showRefactor: true,
+    showTest: true,
+    showChore: true,
 };
 var log = function (message) { return console.info("[changelog-generator] => " + message); };
 function generate(options, commitsList) {
     if (options === void 0) { options = defaultOptions; }
     if (commitsList === void 0) { commitsList = null; }
     package_1.getOptionsFromPackage(options);
+    //TODO: gotta be a better way to merge these 2
     if (!options.file)
         options.file = defaultOptions.file;
+    if (!options.repoUrl)
+        options.repoUrl = defaultOptions.repoUrl;
+    if (!options.repoType)
+        options.repoType = defaultOptions.repoType;
+    if (!options.version)
+        options.version = defaultOptions.version;
+    if (typeof options.showFeat !== 'undefined')
+        options.showFeat = defaultOptions.showFeat;
+    if (typeof options.showFix !== 'undefined')
+        options.showFix = defaultOptions.showFix;
+    if (typeof options.showPerf !== 'undefined')
+        options.showPerf = defaultOptions.showPerf;
+    if (typeof options.showDocs !== 'undefined')
+        options.showDocs = defaultOptions.showDocs;
+    if (typeof options.showStyle !== 'undefined')
+        options.showStyle = defaultOptions.showStyle;
+    if (typeof options.showRefactor !== 'undefined')
+        options.showRefactor = defaultOptions.showRefactor;
+    if (typeof options.showTest !== 'undefined')
+        options.showTest = defaultOptions.showTest;
+    if (typeof options.showChore !== 'undefined')
+        options.showChore = defaultOptions.showChore;
     var commits = commitsList || git_1.gitAllCommits(options);
     if (commits && commits.length < 1) {
         log('found no commits to generate from');
