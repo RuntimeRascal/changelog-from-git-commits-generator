@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var linq_1 = require("linq");
 var util_1 = require("util");
+var version_1 = require("./version");
 var links = {
     git: {
         home: "%s/blob/master/README.md",
@@ -21,14 +22,20 @@ function getMarkdown(options, commits) {
     content.push("");
     linq_1.from(commits)
         .where(function (c) { return !c.unparsable && c.hash != null; }) // filter out unparasable
-        .groupBy(function (c) { return c.version; }) // we group by version first
-        .select(function (group) { return { key: group.key(), value: group.toArray() }; })
+        .groupBy(function (c) { return c.version.unparsed; }) // we group by version first
+        .select(function (group) { return { key: new version_1.default(group.key()), value: group.toArray() }; })
         .toArray() // so we get js array sort()
         .sort(function (a, b) { return b.key.compare(a.key); }) // sort version largest to smallest
         .forEach(function (group) {
         var key = group.key;
         content.push("");
-        content.push("## [" + key + "](" + util_1.format(links[options.repoType].tag, options.repoUrl, key) + ") (" + (new Date()).toLocaleString() + ") ");
+        var firstCommit = linq_1.from(group.value).firstOrDefault();
+        var date = '';
+        if (firstCommit && firstCommit.authorDate)
+            date = firstCommit.authorDate;
+        else
+            date = (new Date()).toLocaleString();
+        content.push("## [" + key.unparsed + "](" + util_1.format(links[options.repoType].tag, options.repoUrl, key) + ") (" + date + ") ");
         linq_1.from(group.value)
             .groupBy(function (commit) { return commit.type; }) // then we group by type
             .forEach(function (byTypes) {

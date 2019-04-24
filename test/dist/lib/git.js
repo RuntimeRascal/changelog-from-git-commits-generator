@@ -112,41 +112,45 @@ function gitAllCommits(options) {
     var tags = rawGitTag.split('\n').filter(function (t) { return t; });
     var commits = [];
     if (tags.length == 0) {
-        var newCommits = gitCommits(null, null, options.version);
-        commits.push.apply(commits, __spread(newCommits));
+        commits.push.apply(commits, __spread(gitCommits(null, null, options.version, options.version)));
     }
     else {
+        var allCommits = child_process_1.execSync('git log --reverse --oneline').toString();
+        var firstCommitLine = allCommits.split('\n').filter(function (t) { return t; })[0];
+        var fromHash = firstCommitLine.split(' ')[0];
+        var toTag = tags[0];
+        if (toTag) // make sure its not empty
+         {
+            // push commits from first commit to the first tag
+            commits.push.apply(commits, __spread(gitCommits(fromHash, toTag, '1.0.0', toTag)));
+        }
         for (var index = 0; index < tags.length; index++) {
-            var latest = 'HEAD';
-            var to = latest;
+            var version = options.version;
+            var to = 'HEAD';
             var from = tags[index];
             var next = index + 1;
-            if (next < tags.length)
+            if (next < tags.length) {
                 to = tags[index + 1];
-            var newCommits = gitCommits(from, to, options.version);
-            commits.push.apply(commits, __spread(newCommits));
+                version = to;
+            }
+            commits.push.apply(commits, __spread(gitCommits(from, to, version, to)));
         }
     }
     return commits;
 }
 exports.gitAllCommits = gitAllCommits;
-function gitCommits(from, to, latestVersion) {
+function gitCommits(from, to, latestVersion, tag) {
     var range = from && to ? " " + from + ".." + to : '';
     var rawGitCommits = child_process_1.execSync("git log" + range + " -E --format=" + COMMIT_DETAILS_FORMAT, {
         maxBuffer: Number.MAX_SAFE_INTEGER
     }).toString();
     if (!rawGitCommits)
         return [];
-    var version = to || latestVersion;
-    if (version == 'HEAD')
-        version = latestVersion;
-    else {
-        var versionRegex = /(\d+\.(\d+\.?(\d+\.?(\d+)?)))/;
-        var versionMatch = versionRegex.exec(to);
-        if (versionMatch && versionMatch[0])
-            version = versionMatch[0];
-    }
-    var ver = new version_1.default(version);
+    var versionRegex = /(\d+\.(\d+\.?(\d+\.?(\d+)?)))/;
+    var versionMatch = versionRegex.exec(latestVersion);
+    if (versionMatch && versionMatch[0])
+        latestVersion = versionMatch[0];
+    var ver = new version_1.default(latestVersion);
     var commits = rawGitCommits
         .split(FORMATS.COMMIT_DETAILS_SEPARATOR)
         .map(function (raw) {
@@ -154,7 +158,7 @@ function gitCommits(from, to, latestVersion) {
             return null;
         var lines = raw.split('\n');
         var commit = new Commit();
-        commit.tag = to || latestVersion;
+        commit.tag = tag;
         commit.version = ver;
         for (var key in FORMATS)
             raw = raw.replace(FORMATS[key], '');

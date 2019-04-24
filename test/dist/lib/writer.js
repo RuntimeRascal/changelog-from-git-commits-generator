@@ -28,7 +28,13 @@ function getMarkdown(options, commits) {
         .forEach(function (group) {
         var key = group.key;
         content.push("");
-        content.push("## [" + key + "](" + util_1.format(links[options.repoType].tag, options.repoUrl, key) + ") (" + (new Date()).toLocaleString() + ") ");
+        var firstCommit = linq_1.from(group.value).firstOrDefault();
+        var date = '';
+        if (firstCommit && firstCommit.authorDate)
+            date = firstCommit.authorDate;
+        else
+            date = (new Date()).toLocaleString();
+        content.push("## [" + key.unparsed + "](" + util_1.format(links[options.repoType].tag, options.repoUrl, key) + ") (" + date + ") ");
         linq_1.from(group.value)
             .groupBy(function (commit) { return commit.type; }) // then we group by type
             .forEach(function (byTypes) {

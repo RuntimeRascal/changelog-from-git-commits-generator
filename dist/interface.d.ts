@@ -22,12 +22,21 @@ export interface IOptions {
     file?: string;
     projectName?: string;
     showUnparsableCommit?: boolean;
+    showFeat?: boolean;
+    showFix?: boolean;
+    showPerf?: boolean;
+    showDocs?: boolean;
+    showStyle?: boolean;
+    showRefactor?: boolean;
+    showTest?: boolean;
+    showChore?: boolean;
 }
 export interface IVersion {
     major: number;
     minor: number;
     build: number;
     revision: number;
+    unparsed: string;
     valid(): boolean;
     parse(version: string): version;
     compare(version: IVersion): number;
