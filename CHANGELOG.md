@@ -1,7 +1,19 @@
 # [changelog-from-git-commits-generator](https://github.com/simpert/changelog-from-git-commits-generator/blob/master/README.md)    
 
 
-## [1.0.2](https://github.com/simpert/changelog-from-git-commits-generator/tags/1.0.2) (4/16/2019, 11:17:54 AM) 
+## [1.0.3](https://github.com/simpert/changelog-from-git-commits-generator/tags/1.0.3) (Tue Apr 16 11:21:00 2019 -0600) 
+
+- ### build:
+   - (scripts)  cleanup npm scripts [a538f03](https://github.com/simpert/changelog-from-git-commits-generator/commit/a538f0331bbf1de91faaae5b1297d9b338e8e701)
+   - (package)  update generated changelog [7eecaab](https://github.com/simpert/changelog-from-git-commits-generator/commit/7eecaab4aca32ec6835b017cb27dbccb0c0fc9b9)
+   - (scripts)  modify publish sccript [246e1d4](https://github.com/simpert/changelog-from-git-commits-generator/commit/246e1d41e7a38e3dcd91b723f09ca6c4bb35e47f)
+
+
+- ### feat:
+   - (module)  write first commit date into version tag for each version [d3d36c6](https://github.com/simpert/changelog-from-git-commits-generator/commit/d3d36c665c98865420bd5393b5091522ae21c13f)
+
+
+## [1.0.2](https://github.com/simpert/changelog-from-git-commits-generator/tags/1.0.2) (Tue Apr 16 11:12:01 2019 -0600) 
 
 - ### fix:
    - (package)  when pass empty options default file needs to still be set along with other default op [ee9bf9c](https://github.com/simpert/changelog-from-git-commits-generator/commit/ee9bf9c463993cf1611d76663209be4efd4312f6)
@@ -16,13 +28,7 @@
    - (package)  modified to get git commits from first commit to first tag to ensure all commits are [aeaf581](https://github.com/simpert/changelog-from-git-commits-generator/commit/aeaf581bb9fe1f44acc25d113a75ac2a298c99bf)
 
 
-## [1.0.2](https://github.com/simpert/changelog-from-git-commits-generator/tags/1.0.2) (4/16/2019, 11:17:54 AM) 
-
-- ### build:
-   - (scripts)  modify publish sccript [246e1d4](https://github.com/simpert/changelog-from-git-commits-generator/commit/246e1d41e7a38e3dcd91b723f09ca6c4bb35e47f)
-
-
-## [1.0.0](https://github.com/simpert/changelog-from-git-commits-generator/tags/1.0.0) (4/16/2019, 11:17:54 AM) 
+## [1.0.0](https://github.com/simpert/changelog-from-git-commits-generator/tags/1.0.0) (Mon Apr 15 20:09:52 2019 -0600) 
 
 - ### chore:
    - (module)  bump version [39dd01d](https://github.com/simpert/changelog-from-git-commits-generator/commit/39dd01d3b93fa59e882c8b5e4d0f58bc41f9d817)

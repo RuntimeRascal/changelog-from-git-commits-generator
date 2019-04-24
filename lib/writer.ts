@@ -1,6 +1,7 @@
 import { from as linq } from 'linq';
 import { format } from 'util';
 import { ICommit, IOptions } from './interface';
+import Version from './version';
 
 var links = {
     git: {
@@ -24,8 +25,8 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
 
     linq( commits )
         .where( c => !c.unparsable && c.hash != null )  // filter out unparasable
-        .groupBy( c => c.version )                      // we group by version first
-        .select( group => { return { key: group.key(), value: group.toArray() } } )
+        .groupBy( c => c.version.unparsed )                      // we group by version first
+        .select( group => { return { key: new Version( group.key() ), value: group.toArray() } } )
         .toArray()                                      // so we get js array sort()
         .sort( ( a, b ) => b.key.compare( a.key ) )     // sort version largest to smallest
         .forEach( group =>

@@ -80,9 +80,6 @@ function gitClosestTag ()
 
 function gitAllCommits ( options: IOptions )
 {
-
-
-
     const rawGitTag = execSync( 'git tag --list' ).toString();
     var tags = rawGitTag.split( '\n' ).filter( t => t );
     let commits: Commit[] = [];
