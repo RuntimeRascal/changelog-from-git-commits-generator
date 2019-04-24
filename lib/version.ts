@@ -130,15 +130,3 @@ class Version implements IVersion
 }
 
 export default Version;
-
-let ver = new Version( '1.1.8-beta.4' );
-console.log( `ver: ${ ver.toString() }` );
-let ver2 = new Version( '1.1.8.4' );
-console.log( `ver2: ${ ver2.toString() }` );
-
-let compare = ver.compare( ver2 );
-console.log( `ver ${ compare < 0 ? '<' : compare == 0 ? '==' : '>' } ver2` );
-
-let compare2 = ver2.compare( ver );
-console.log( `ver2 ${ compare2 < 0 ? '<' : compare2 == 0 ? '==' : '>' } ver` );
-console.log( 'done' );

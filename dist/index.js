@@ -31,7 +31,7 @@ function generate(options, commitsList) {
     if (commitsList === void 0) { commitsList = null; }
     package_1.getOptionsFromPackage(options);
     //TODO: gotta be a better way to merge these 2
-    console.log("generate args: " + JSON.stringify(options));
+    //console.log( `generate args: ${ JSON.stringify( options ) }` );
     if (!options.file)
         options.file = defaultOptions.file;
     if (!options.repoUrl)
@@ -92,4 +92,4 @@ function generate(options, commitsList) {
     return Promise.resolve(changelogPath);
 }
 exports.default = generate;
-generate();
+//generate();

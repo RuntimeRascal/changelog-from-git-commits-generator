@@ -116,12 +116,3 @@ var Version = /** @class */ (function () {
     return Version;
 }());
 exports.default = Version;
-var ver = new Version('1.1.8-beta.4');
-console.log("ver: " + ver.toString());
-var ver2 = new Version('1.1.8.4');
-console.log("ver2: " + ver2.toString());
-var compare = ver.compare(ver2);
-console.log("ver " + (compare < 0 ? '<' : compare == 0 ? '==' : '>') + " ver2");
-var compare2 = ver2.compare(ver);
-console.log("ver2 " + (compare2 < 0 ? '<' : compare2 == 0 ? '==' : '>') + " ver");
-console.log('done');

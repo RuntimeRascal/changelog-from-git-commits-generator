@@ -88,4 +88,4 @@ function generate ( options: IOptions = defaultOptions, commitsList: ICommit[] =
 
 export default generate;
 
-generate();
+//generate();
