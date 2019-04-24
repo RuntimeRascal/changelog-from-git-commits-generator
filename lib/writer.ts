@@ -32,7 +32,14 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
         {
             let key = group.key;
             content.push( `` );
-            content.push( `## [${ key }](${ format( links[ options.repoType ].tag, options.repoUrl, key ) }) (${ ( new Date() ).toLocaleString() }) ` );
+            let firstCommit = linq( group.value ).firstOrDefault();
+            let date = '';
+            if ( firstCommit && firstCommit.authorDate )
+                date = firstCommit.authorDate;
+            else
+                date = ( new Date() ).toLocaleString();
+
+            content.push( `## [${ key.unparsed }](${ format( links[ options.repoType ].tag, options.repoUrl, key ) }) (${ date }) ` );
 
             linq( group.value )
                 .groupBy( commit => commit.type )       // then we group by type
