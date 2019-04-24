@@ -44,6 +44,11 @@ function generate ( options: IOptions = defaultOptions, commitsList: ICommit[] =
     if ( typeof options.showRefactor !== 'undefined' ) options.showRefactor = defaultOptions.showRefactor;
     if ( typeof options.showTest !== 'undefined' ) options.showTest = defaultOptions.showTest;
     if ( typeof options.showChore !== 'undefined' ) options.showChore = defaultOptions.showChore;
+    if ( typeof options.showBreaking !== 'undefined' ) options.showBreaking = defaultOptions.showBreaking;
+    if ( typeof options.showBuild !== 'undefined' ) options.showBuild = defaultOptions.showBuild;
+    if ( typeof options.showCi !== 'undefined' ) options.showCi = defaultOptions.showCi;
+    if ( typeof options.showRevert !== 'undefined' ) options.showRevert = defaultOptions.showRevert;
+    if ( typeof options.showOther !== 'undefined' ) options.showOther = defaultOptions.showOther;
 
     const commits = commitsList || gitAllCommits( options );
     if ( commits && commits.length < 1 )
@@ -81,11 +86,4 @@ function generate ( options: IOptions = defaultOptions, commitsList: ICommit[] =
 
 export default generate;
 
-// generate( {
-//     major: false,
-//     minor: false,
-//     patch: false,
-//     repoUrl: '',
-//     repoType: RepoType.git,
-//     file: './CHANGELOG.md'
-// } );
+generate();

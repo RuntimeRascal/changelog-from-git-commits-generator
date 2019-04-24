@@ -30,6 +30,11 @@ export interface IOptions {
     showRefactor?: boolean;
     showTest?: boolean;
     showChore?: boolean;
+    showBreaking?: boolean;
+    showBuild?: boolean;
+    showCi?: boolean;
+    showRevert?: boolean;
+    showOther?: boolean;
 }
 export interface IVersion {
     major: number;

@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var linq_1 = require("linq");
 var util_1 = require("util");
 var version_1 = require("./version");
+var path_1 = require("path");
+var fse = require("fs-extra");
 var links = {
     git: {
         home: "%s/blob/master/README.md",
@@ -20,6 +22,8 @@ function getMarkdown(options, commits) {
     var content = [];
     content.push("# [" + (options.projectName || 'Project Name') + "](" + util_1.format(links[options.repoType].home, options.repoUrl) + ")    ");
     content.push("");
+    var pathTofile = path_1.join(__dirname, '../', '.changelogrc');
+    var types = fse.readJSONSync(pathTofile).types;
     linq_1.from(commits)
         .where(function (c) { return !c.unparsable && c.hash != null; }) // filter out unparasable
         .groupBy(function (c) { return c.version.unparsed; }) // we group by version first
@@ -39,13 +43,48 @@ function getMarkdown(options, commits) {
         linq_1.from(group.value)
             .groupBy(function (commit) { return commit.type; }) // then we group by type
             .forEach(function (byTypes) {
+            var fuckingKey = byTypes.key();
+            // let commitType = types.firstOrDefault( t => t.value == fuckingKey );
+            var matches = types.filter(function (c) { return c.key == fuckingKey; });
+            if (matches.length == 0)
+                return;
+            var commitType = matches[0];
+            if (typeof commitType == 'undefined' || !commitType.key)
+                return;
+            if (commitType.key == 'feat' && !options.showFeat)
+                return;
+            if (commitType.key == 'fix' && !options.showFix)
+                return;
+            if (commitType.key == 'perf' && !options.showPerf)
+                return;
+            if (commitType.key == 'docs' && !options.showDocs)
+                return;
+            if (commitType.key == 'style' && !options.showStyle)
+                return;
+            if (commitType.key == 'refactor' && !options.showRefactor)
+                return;
+            if (commitType.key == 'test' && !options.showTest)
+                return;
+            if (commitType.key == 'chore' && !options.showChore)
+                return;
+            if (commitType.key == 'breaking' && !options.showBreaking)
+                return;
+            if (commitType.key == 'build' && !options.showBuild)
+                return;
+            if (commitType.key == 'ci' && !options.showCi)
+                return;
+            if (commitType.key == 'revert' && !options.showRevert)
+                return;
+            if (commitType.key == 'other' && !options.showOther)
+                return;
             content.push("");
-            content.push("- ### " + byTypes.key() + ":");
+            content.push("- ### " + commitType.name + ":");
             byTypes.forEach(function (t) {
-                content.push("   - (" + t.category + ") " + t.subject + " [" + t.hashAbbrev + "](" + util_1.format(links[options.repoType].commit, options.repoUrl, t.hash) + ")");
+                content.push("   - *(" + t.category + ")* " + t.subject + " [" + t.hashAbbrev + "](" + util_1.format(links[options.repoType].commit, options.repoUrl, t.hash) + ")");
                 if (t.workItems && t.workItems.length > 0) {
+                    content.push('   - *CLOSES*');
                     t.workItems.forEach(function (wi) {
-                        content.push("      > - WORK ITEM: [" + wi.display + "](" + util_1.format(links[options.repoType].issue, options.repoUrl, wi.id) + ")");
+                        content.push("      > - [" + wi.display + "](" + util_1.format(links[options.repoType].issue, options.repoUrl, wi.id) + ")");
                     });
                 }
             });

@@ -37,6 +37,26 @@
         "key": "chore",
         "name": "Chores",
         "hide": true
+    },
+    {
+        "key": "breaking",
+        "name": "Breaking Changes"
+    },
+     {
+        "key": "build",
+        "name": "Build Improvments"
+    }, 
+    {
+        "key": "ci",
+        "name": "Continuous Integration"
+    },
+    {
+        "key": "revert",
+        "name": "Reverts"
+    },
+    {
+        "key": "other",
+        "name": "Misc."
     } ],
     "notes": [
     {

@@ -55,6 +55,71 @@ var argv = yargs.help()
     required: false,
     type: "boolean"
 })
+    .option('showFeat', {
+    default: true,
+    required: false,
+    type: "boolean"
+})
+    .option('showFix', {
+    default: true,
+    required: false,
+    type: "boolean"
+})
+    .option('showPerf', {
+    default: true,
+    required: false,
+    type: "boolean"
+})
+    .option('showDocs', {
+    default: true,
+    required: false,
+    type: "boolean"
+})
+    .option('showStyle', {
+    default: true,
+    required: false,
+    type: "boolean"
+})
+    .option('showRefactor', {
+    default: true,
+    required: false,
+    type: "boolean"
+})
+    .option('showTest', {
+    default: true,
+    required: false,
+    type: "boolean"
+})
+    .option('showChore', {
+    default: true,
+    required: false,
+    type: "boolean"
+})
+    .option('showBreaking', {
+    default: true,
+    required: false,
+    type: "boolean"
+})
+    .option('showBuild', {
+    default: true,
+    required: false,
+    type: "boolean"
+})
+    .option('showCi', {
+    default: true,
+    required: false,
+    type: "boolean"
+})
+    .option('showRevert', {
+    default: true,
+    required: false,
+    type: "boolean"
+})
+    .option('showOther', {
+    default: true,
+    required: false,
+    type: "boolean"
+})
     .epilogue('for more information goto: https://github.com/simpert/lingualizer')
     .version(require('../package.json').version)
     .fail(function (m, e) {

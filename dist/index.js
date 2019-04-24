@@ -55,6 +55,16 @@ function generate(options, commitsList) {
         options.showTest = defaultOptions.showTest;
     if (typeof options.showChore !== 'undefined')
         options.showChore = defaultOptions.showChore;
+    if (typeof options.showBreaking !== 'undefined')
+        options.showBreaking = defaultOptions.showBreaking;
+    if (typeof options.showBuild !== 'undefined')
+        options.showBuild = defaultOptions.showBuild;
+    if (typeof options.showCi !== 'undefined')
+        options.showCi = defaultOptions.showCi;
+    if (typeof options.showRevert !== 'undefined')
+        options.showRevert = defaultOptions.showRevert;
+    if (typeof options.showOther !== 'undefined')
+        options.showOther = defaultOptions.showOther;
     var commits = commitsList || git_1.gitAllCommits(options);
     if (commits && commits.length < 1) {
         log('found no commits to generate from');
@@ -81,11 +91,4 @@ function generate(options, commitsList) {
     return Promise.resolve(changelogPath);
 }
 exports.default = generate;
-// generate( {
-//     major: false,
-//     minor: false,
-//     patch: false,
-//     repoUrl: '',
-//     repoType: RepoType.git,
-//     file: './CHANGELOG.md'
-// } );
+generate();

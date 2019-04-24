@@ -2,6 +2,8 @@ import { from as linq } from 'linq';
 import { format } from 'util';
 import { ICommit, IOptions } from './interface';
 import Version from './version';
+import { resolve, join } from 'path';
+import * as fse from 'fs-extra';
 
 var links = {
     git: {
@@ -22,6 +24,9 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
     let content: string[] = [];
     content.push( `# [${ options.projectName || 'Project Name' }](${ format( links[ options.repoType ].home, options.repoUrl ) })    ` );
     content.push( `` );
+
+    let pathTofile = join( __dirname, '../', '.changelogrc' );
+    let types = fse.readJSONSync( pathTofile ).types;
 
     linq( commits )
         .where( c => !c.unparsable && c.hash != null )  // filter out unparasable
@@ -46,17 +51,56 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
                 .groupBy( commit => commit.type )       // then we group by type
                 .forEach( byTypes =>
                 {
+                    let fuckingKey = byTypes.key();
+                    // let commitType = types.firstOrDefault( t => t.value == fuckingKey );
+                    let matches = types.filter( c => c.key == fuckingKey );
+                    if ( matches.length == 0 )
+                        return;
+
+                    let commitType = matches[ 0 ];
+                    if ( typeof commitType == 'undefined' || !commitType.key )
+                        return;
+
+                    if ( commitType.key == 'feat' && !options.showFeat )
+                        return;
+                    if ( commitType.key == 'fix' && !options.showFix )
+                        return;
+                    if ( commitType.key == 'perf' && !options.showPerf )
+                        return;
+                    if ( commitType.key == 'docs' && !options.showDocs )
+                        return;
+                    if ( commitType.key == 'style' && !options.showStyle )
+                        return;
+                    if ( commitType.key == 'refactor' && !options.showRefactor )
+                        return;
+                    if ( commitType.key == 'test' && !options.showTest )
+                        return;
+                    if ( commitType.key == 'chore' && !options.showChore )
+                        return;
+                    if ( commitType.key == 'breaking' && !options.showBreaking )
+                        return;
+                    if ( commitType.key == 'build' && !options.showBuild )
+                        return;
+                    if ( commitType.key == 'ci' && !options.showCi )
+                        return;
+                    if ( commitType.key == 'revert' && !options.showRevert )
+                        return;
+                    if ( commitType.key == 'other' && !options.showOther )
+                        return;
+
+
                     content.push( `` );
-                    content.push( `- ### ${ byTypes.key() }:` );
+                    content.push( `- ### ${ commitType.name }:` );
 
                     byTypes.forEach( t =>
                     {
-                        content.push( `   - (${ t.category }) ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
+                        content.push( `   - *(${ t.category })* ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
                         if ( t.workItems && t.workItems.length > 0 )
                         {
+                            content.push( '   - *CLOSES*' )
                             t.workItems.forEach( wi =>
                             {
-                                content.push( `      > - WORK ITEM: [${ wi.display }](${ format( links[ options.repoType ].issue, options.repoUrl, wi.id ) })` );
+                                content.push( `      > - [${ wi.display }](${ format( links[ options.repoType ].issue, options.repoUrl, wi.id ) })` );
                             } )
                         }
                     } );

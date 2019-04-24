@@ -1,12 +1,30 @@
 'use strict';
 module.exports = {
-    types: [ { value: 'breaking', name: 'breaking: a breaking change' },
+    types: [
+    {
+        value: 'breaking',
+        name: 'breaking: a breaking change'
+    },
     {
         value: 'build',
         name: 'build: a build improvment'
-    }, { value: 'ci', name: 'ci: continuous-integration' }, { value: 'chore',
-        name: 'chore: normal development' }, { value: 'feat', name: 'feat: new feature' }, { value: 'fix',
-        name: 'fix: bug fix' },
+    },
+    {
+        value: 'ci',
+        name: 'ci: continuous-integration'
+    },
+    {
+        value: 'chore',
+        name: 'chore: normal development'
+    },
+    {
+        value: 'feat',
+        name: 'feat: new feature'
+    },
+    {
+        value: 'fix',
+        name: 'fix: bug fix'
+    },
     {
         value: 'docs',
         name: 'docs: documentation only changes'
@@ -14,12 +32,27 @@ module.exports = {
     {
         value: 'style',
         name: 'style: changes that do not affect the meaning of the code\n    (white-space, formatting, missing semi-colons, etc)'
-    }, { value: 'refactor', name: 'refactor: code change that neither fixes a bug nor adds a feature' },
+    },
+    {
+        value: 'refactor',
+        name: 'refactor: code change that neither fixes a bug nor adds a feature'
+    },
     {
         value: 'perf',
         name: 'perf: code change that improves performance'
-    }, { value: 'test', name: 'test: adding missing tests' }, { value: 'revert', name: 'revert:' },
-    { value: 'other', name: 'other: doesnt fit in any other category' } ],
+    },
+    {
+        value: 'test',
+        name: 'test: adding missing tests'
+    },
+    {
+        value: 'revert',
+        name: 'revert:'
+    },
+    {
+        value: 'other',
+        name: 'other: doesnt fit in any other category'
+    } ],
     scopes: [ { name: 'npm' }, { name: 'module' }, { name: 'localization' }, { name: 'scripts' },
     { name: 'package' }, { name: 'tasks' }, { name: 'typescript' }, { name: 'switches' }, { name: 'cli' },
         { name: 'resources' }

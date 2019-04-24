@@ -65,6 +65,84 @@ let argv = yargs.help()
             required: false,
             type: "boolean"
         } as yargs.Options )
+    .option( 'showFeat',
+        {
+            default: true,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'showFix',
+        {
+            default: true,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'showPerf',
+        {
+            default: true,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'showDocs',
+        {
+            default: true,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'showStyle',
+        {
+            default: true,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'showRefactor',
+        {
+            default: true,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'showTest',
+        {
+            default: true,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'showChore',
+        {
+            default: true,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'showBreaking',
+        {
+            default: true,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'showBuild',
+        {
+            default: true,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'showCi',
+        {
+            default: true,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'showRevert',
+        {
+            default: true,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'showOther',
+        {
+            default: true,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
     .epilogue( 'for more information goto: https://github.com/simpert/lingualizer' )
     .version( require( '../package.json' ).version )
     .fail( ( m, e ) =>
