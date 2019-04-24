@@ -51,9 +51,8 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
                 .groupBy( commit => commit.type )       // then we group by type
                 .forEach( byTypes =>
                 {
-                    let fuckingKey = byTypes.key();
-                    // let commitType = types.firstOrDefault( t => t.value == fuckingKey );
-                    let matches = types.filter( c => c.key == fuckingKey );
+                    let key = byTypes.key();
+                    let matches = types.filter( c => c.key == key );
                     if ( matches.length == 0 )
                         return;
 
@@ -87,7 +86,6 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
                         return;
                     if ( commitType.key == 'other' && !options.showOther )
                         return;
-
 
                     content.push( `` );
                     content.push( `- ### ${ commitType.name }:` );

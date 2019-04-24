@@ -7,7 +7,7 @@
     "types": "dist/index.d.ts",
     "scripts":
     {
-        "cli": "node ./dist/cli.js",
+        "cli": "node ./dist/cli.js --showFeat=false --showFix=false --verbose",
         "new-changelog": "node ./dist/cli.js && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md'",
         "commit": "git cz",
         "commitAll": "git add -A && git cz",

@@ -43,9 +43,8 @@ function getMarkdown(options, commits) {
         linq_1.from(group.value)
             .groupBy(function (commit) { return commit.type; }) // then we group by type
             .forEach(function (byTypes) {
-            var fuckingKey = byTypes.key();
-            // let commitType = types.firstOrDefault( t => t.value == fuckingKey );
-            var matches = types.filter(function (c) { return c.key == fuckingKey; });
+            var key = byTypes.key();
+            var matches = types.filter(function (c) { return c.key == key; });
             if (matches.length == 0)
                 return;
             var commitType = matches[0];
