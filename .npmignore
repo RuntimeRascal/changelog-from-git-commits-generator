@@ -1,7 +1,3 @@
-lib/
-test/dist
 .vscode/
-.changelogrc
-.jsbeautifyrc
 test/data.json
 tsconfig.json
