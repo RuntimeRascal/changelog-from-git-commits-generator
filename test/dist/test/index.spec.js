@@ -65,7 +65,7 @@ describe('index', function () {
         });
     }); }).timeout(0);
     it("expect markdown from single commit", function () { return __awaiter(_this, void 0, void 0, function () {
-        var resultingFile, markdown;
+        var resultingFile, markdown, index;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, lib_1.default({ file: helper_1.CHANGELOG_NAME }, [helper_1.COMMIT1])];
@@ -73,7 +73,9 @@ describe('index', function () {
                     resultingFile = _a.sent();
                     markdown = helper_1.readMarkdown().trim();
                     expect(resultingFile.length).to.be.greaterThan(0);
-                    expect(markdown.indexOf('commit1')).to.equal(276);
+                    index = markdown.indexOf('commit1');
+                    expect(index > 270).to.be.true;
+                    expect(index < 280).to.be.true;
                     return [2 /*return*/];
             }
         });
