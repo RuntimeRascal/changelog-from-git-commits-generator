@@ -130,10 +130,10 @@ function gitCommits ( from: string, to: string, latestVersion: string, tag: stri
     if ( !rawGitCommits )
         return [];
 
-    let versionRegex = /(\d+\.(\d+\.?(\d+\.?(\d+)?)))/;
-    let versionMatch = versionRegex.exec( latestVersion );
-    if ( versionMatch && versionMatch[ 0 ] )
-        latestVersion = versionMatch[ 0 ];
+    // let versionRegex = /(\d+\.(\d+\.?(\d+\.?(\d+)?)))/;
+    // let versionMatch = versionRegex.exec( latestVersion );
+    // if ( versionMatch && versionMatch[ 0 ] )
+    //     latestVersion = versionMatch[ 0 ];
 
     let ver = new Version( latestVersion );
 

@@ -12,7 +12,7 @@ var links = {
         issue: "%s/issues/%s",
         commit: "%s/commit/%s"
     }, vsts: {
-        home: "%s/blob/master/README.md",
+        home: "%s",
         tag: "%s/_git/application?version=GT%s",
         issue: "%s/_workitems/edit/%s",
         commit: "%s/_git/application/commit/%s"
@@ -79,7 +79,7 @@ function getMarkdown(options, commits) {
             content.push("");
             content.push("- ### " + commitType.name + ":");
             byTypes.forEach(function (t) {
-                content.push("   - *(" + t.category + ")* " + t.subject + " [" + t.hashAbbrev + "](" + util_1.format(links[options.repoType].commit, options.repoUrl, t.hash) + ")");
+                content.push("   - `(" + t.category + ")` " + t.subject + " [" + t.hashAbbrev + "](" + util_1.format(links[options.repoType].commit, options.repoUrl, t.hash) + ")");
                 if (t.workItems && t.workItems.length > 0) {
                     content.push('   - *CLOSES*');
                     t.workItems.forEach(function (wi) {

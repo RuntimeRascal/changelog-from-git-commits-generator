@@ -146,10 +146,10 @@ function gitCommits(from, to, latestVersion, tag) {
     }).toString();
     if (!rawGitCommits)
         return [];
-    var versionRegex = /(\d+\.(\d+\.?(\d+\.?(\d+)?)))/;
-    var versionMatch = versionRegex.exec(latestVersion);
-    if (versionMatch && versionMatch[0])
-        latestVersion = versionMatch[0];
+    // let versionRegex = /(\d+\.(\d+\.?(\d+\.?(\d+)?)))/;
+    // let versionMatch = versionRegex.exec( latestVersion );
+    // if ( versionMatch && versionMatch[ 0 ] )
+    //     latestVersion = versionMatch[ 0 ];
     var ver = new version_1.default(latestVersion);
     var commits = rawGitCommits
         .split(FORMATS.COMMIT_DETAILS_SEPARATOR)

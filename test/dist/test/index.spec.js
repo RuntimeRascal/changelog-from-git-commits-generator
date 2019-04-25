@@ -75,7 +75,7 @@ describe('index', function () {
                     expect(resultingFile.length).to.be.greaterThan(0);
                     index = markdown.indexOf('commit1');
                     expect(index > 270).to.be.true;
-                    expect(index < 280).to.be.true;
+                    expect(index < 290).to.be.true;
                     return [2 /*return*/];
             }
         });

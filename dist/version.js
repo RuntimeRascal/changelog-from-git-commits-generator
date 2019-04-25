@@ -50,6 +50,10 @@ var Version = /** @class */ (function () {
     };
     Version.prototype.parse = function (version) {
         this._unparsed = version;
+        var versionRegex = /(?=\w?)(\d+\.(\d+\.?(\d+\.?(\d+)?))(-\w+(\.\d+)?)?)/;
+        var versionMatch = versionRegex.exec(version);
+        if (versionMatch && versionMatch[0])
+            version = versionMatch[0];
         //TODO: what about versions that have beta and such as 1.1.8-beta.4
         this._version = { major: -1, minor: -1, build: -1, revision: -1 };
         //if ( !version.match( /^[0-9,.]*$/g ) )
