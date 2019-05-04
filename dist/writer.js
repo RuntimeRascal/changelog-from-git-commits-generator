@@ -42,7 +42,7 @@ function getMarkdown(options, commits) {
         var date = firstCommit && firstCommit.authorDate
             ? require('moment')(firstCommit.authorDate).format(DATE_FORMAT)
             : require('moment')((new Date()).toLocaleString()).format(DATE_FORMAT);
-        content.push("## [" + group.key.unparsed + "](" + util_1.format(links[options.repoType].tag, options.repoUrl, group.key) + ") (" + date + ") ");
+        content.push("## [" + group.key.unparsed + "](" + util_1.format(links[options.repoType].tag, options.repoUrl, group.key) + ") *( " + date + " )* ");
         linq_1.from(group.value)
             .groupBy(function (commit) { return commit.type; }) // then we group by type
             .forEach(function (byTypes) {
@@ -72,7 +72,8 @@ function getMarkdown(options, commits) {
             byTypes.forEach(function (t) {
                 var author = '';
                 if (!options.hideAuthorName)
-                    author = "*[<font color=\"cyan\">[" + t.author + "]</font>]*";
+                    author = "*[" + t.author + "](mailto:" + t.authorEmail + ")*";
+                //author = `*<font color="cyan">[${ t.author }](${ t.authorEmail })</font>*`;
                 content.push("   - " + author + "**`(" + t.category + ")`** " + t.subject + " [" + t.hashAbbrev + "](" + util_1.format(links[options.repoType].commit, options.repoUrl, t.hash) + ")");
                 if (t.workItems && t.workItems.length > 0) {
                     if (options.repoType == interface_1.RepoType.git)
