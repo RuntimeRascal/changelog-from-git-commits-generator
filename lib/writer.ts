@@ -31,26 +31,29 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
     let types = fse.readJSONSync( pathTofile ).types;
 
     linq( commits )
-        .where( c => !c.unparsable && c.hash != null )  // filter out unparasable
+        //.where( c => !c.unparsable && c.hash != null )  // filter out unparasable
+        .where( c => c.hash != null )  // filter out unparasable
         .groupBy( c => c.version.unparsed )                      // we group by version first
         .select( group => { return { key: new Version( group.key() ), value: group.toArray() } } )
         .toArray()                                      // so we get js array sort()
         .sort( ( a, b ) => b.key.compare( a.key ) )     // sort version largest to smallest
         .forEach( group =>
         {
+            let thisgroupContent: string[] = [];
             // Dont write version if there are not any commits under it
-            if ( options.hideEmptyVersions && group.value && group.value.length > 0 )
+            if ( options.hideEmptyVersions && group.value && group.value.length <= 0 )
                 return;
 
-            content.push( `` );
+            thisgroupContent.push( `` );
             let firstCommit = linq( group.value ).firstOrDefault();
 
             let date = firstCommit && firstCommit.authorDate
                 ? require( 'moment' )( firstCommit.authorDate ).format( DATE_FORMAT )
                 : require( 'moment' )( ( new Date() ).toLocaleString() ).format( DATE_FORMAT );
 
-            content.push( `## [${ group.key.unparsed }](${ format( links[ options.repoType ].tag, options.repoUrl, group.key ) }) *( ${ date } )* ` );
+            thisgroupContent.push( `## [${ group.key.unparsed }](${ format( links[ options.repoType ].tag, options.repoUrl, group.key ) }) *( ${ date } )* ` );
 
+            let thisGroupCommitsToWrite = 0;
             linq( group.value )
                 .groupBy( commit => commit.type )       // then we group by type
                 .forEach( byTypes =>
@@ -83,29 +86,34 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
                         return;
 
                     // Write all commits for this given type group
-                    content.push( `` );
-                    content.push( `- ### ${ commitType.name }:` );
+                    thisgroupContent.push( `` );
+                    thisgroupContent.push( `- ### ${ commitType.name }:` );
 
                     byTypes.forEach( t =>
                     {
-                        let author = '';
-                        if ( !options.hideAuthorName )
-                            author = `*[${ t.author }](mailto:${ t.authorEmail })*`;
-                        //author = `*<font color="cyan">[${ t.author }](${ t.authorEmail })</font>*`;
-                        content.push( `   - ${ author }**\`(${ t.category })\`** ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
-                        if ( t.workItems && t.workItems.length > 0 )
+                        if ( !t.unparsable )
                         {
-                            if ( options.repoType == RepoType.git )
-                                content.push( '   - *CLOSES ISSUES*' );
-                            else
-                                content.push( '   - *LINKED WORK ITEMS*' );
-                            t.workItems.forEach( wi =>
+                            let author = '';
+                            if ( !options.hideAuthorName )
+                                author = `*[${ t.author }](mailto:${ t.authorEmail })*`;
+                            //author = `*<font color="cyan">[${ t.author }](${ t.authorEmail })</font>*`;
+                            thisGroupCommitsToWrite = thisGroupCommitsToWrite + 1;
+                            thisgroupContent.push( `   - ${ author }**\`(${ t.category })\`** ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
+                            if ( t.workItems && t.workItems.length > 0 )
                             {
-                                content.push( `      > - [${ wi.display }](${ format( links[ options.repoType ].issue, options.repoUrl, wi.id ) })` );
-                            } )
+                                if ( options.repoType == RepoType.git )
+                                    thisgroupContent.push( '      - *CLOSES ISSUES*' );
+                                else
+                                    thisgroupContent.push( '      - *LINKED WORK ITEMS*' );
+                                t.workItems.forEach( wi =>
+                                {
+                                    thisgroupContent.push( `         > - [${ wi.display }](${ format( links[ options.repoType ].issue, options.repoUrl, wi.id ) })` );
+                                } )
+                            }
                         }
                     } );
-                    content.push( `` );
+
+                    thisgroupContent.push( `` );
                 } );
 
             // Write all unparsable commits
@@ -114,14 +122,19 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
                 let unparsableCommits = linq( group.value ).where( c => c.unparsable ).toArray();
                 if ( unparsableCommits && unparsableCommits.length > 0 )
                 {
-                    content.push( `` );
-                    content.push( `- ### Unparsable Commits` );
+                    thisgroupContent.push( `` );
+                    thisgroupContent.push( `- ### Unparsable Commits` );
                     unparsableCommits.forEach( c =>
                     {
-                        content.push( `   - ${ c.raw }` );
+                        // thisGroupCommitsToWrite = thisGroupCommitsToWrite + 1;
+                        let rawContent = `${ c.subject || 'empty commit subject' } - ${ c.body || 'empty commit body' }`;
+                        thisgroupContent.push( `   - ${ rawContent }` );
                     } );
                 }
             }
+
+            if ( thisGroupCommitsToWrite > 0 )
+                content.push( ...thisgroupContent );
         } );
 
     content.push( `` );
