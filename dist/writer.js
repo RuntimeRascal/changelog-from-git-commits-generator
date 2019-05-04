@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var linq_1 = require("linq");
 var util_1 = require("util");
+var interface_1 = require("./interface");
 var version_1 = require("./version");
 var path_1 = require("path");
 var fse = require("fs-extra");
@@ -71,10 +72,13 @@ function getMarkdown(options, commits) {
             byTypes.forEach(function (t) {
                 var author = '';
                 if (!options.hideAuthorName)
-                    author = "<font color=\"cyan\">" + t.author + "</font>";
-                content.push("   - " + author + "`(" + t.category + ")` " + t.subject + " [" + t.hashAbbrev + "](" + util_1.format(links[options.repoType].commit, options.repoUrl, t.hash) + ")");
+                    author = "*[<font color=\"cyan\">[" + t.author + "]</font>]*";
+                content.push("   - " + author + "**`(" + t.category + ")`** " + t.subject + " [" + t.hashAbbrev + "](" + util_1.format(links[options.repoType].commit, options.repoUrl, t.hash) + ")");
                 if (t.workItems && t.workItems.length > 0) {
-                    content.push('   - *CLOSES*');
+                    if (options.repoType == interface_1.RepoType.git)
+                        content.push('   - *CLOSES ISSUES*');
+                    else
+                        content.push('   - *LINKED WORK ITEMS*');
                     t.workItems.forEach(function (wi) {
                         content.push("      > - [" + wi.display + "](" + util_1.format(links[options.repoType].issue, options.repoUrl, wi.id) + ")");
                     });

@@ -1,6 +1,6 @@
 import { from as linq } from 'linq';
 import { format } from 'util';
-import { ICommit, IOptions } from './interface';
+import { ICommit, IOptions, RepoType } from './interface';
 import Version from './version';
 import { resolve, join } from 'path';
 import * as fse from 'fs-extra';
@@ -91,11 +91,14 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
                     {
                         let author = '';
                         if ( !options.hideAuthorName )
-                            author = `<font color="cyan">${ t.author }</font>`;
-                        content.push( `   - ${ author }\`(${ t.category })\` ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
+                            author = `*[<font color="cyan">[${ t.author }]</font>]*`;
+                        content.push( `   - ${ author }**\`(${ t.category })\`** ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
                         if ( t.workItems && t.workItems.length > 0 )
                         {
-                            content.push( '   - *CLOSES*' )
+                            if ( options.repoType == RepoType.git )
+                                content.push( '   - *CLOSES ISSUES*' );
+                            else
+                                content.push( '   - *LINKED WORK ITEMS*' );
                             t.workItems.forEach( wi =>
                             {
                                 content.push( `      > - [${ wi.display }](${ format( links[ options.repoType ].issue, options.repoUrl, wi.id ) })` );

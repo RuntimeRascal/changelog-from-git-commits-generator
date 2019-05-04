@@ -218,6 +218,22 @@ function gitCommits ( from: string, to: string, latestVersion: string, tag: stri
                 let tasksLines = linq( bodyLines )
                     .where( line => line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR ) || line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR2 ) )
                     .toArray();
+
+                let tasksString = bodyLines.join( '\n' );
+                let tasks: WorkItem[] = [];
+                let match: RegExpExecArray = null;
+                while ( match = ISSUE_REGEX.exec( tasksString ) )
+                {
+                    if ( match )
+                    {
+                        tasks.push( {
+                            display: match.length > 0 ? match[ 0 ] : null,
+                            id: match.length > 1 ? +match[ 1 ] : 0
+                        } );
+                    }
+                }
+                commit.workItems = tasks.filter( i => i.display );
+
                 if ( tasksLines && tasksLines.length > 0 )
                 {
                     commit.body = linq( bodyLines )
@@ -227,23 +243,22 @@ function gitCommits ( from: string, to: string, latestVersion: string, tag: stri
                         .toArray()
                         .join( '\n' );
 
-                    let tasksString = tasksLines.join( '\n' );
+                    //let tasksString = tasksLines.join( '\n' );
                     //tasksString = tasksString.replace( '#171', '#171, #64 #1, #67\n' );
 
-                    let tasks: WorkItem[] = [];
-                    debugger;
-                    let match: RegExpExecArray = null;
-                    while ( match = ISSUE_REGEX.exec( tasksString ) )
-                    {
-                        if ( match )
-                        {
-                            tasks.push( {
-                                display: match.length > 0 ? match[ 0 ] : null,
-                                id: match.length > 1 ? +match[ 1 ] : 0
-                            } );
-                        }
-                    }
-                    commit.workItems = tasks.filter( i => i.display );
+                    // let tasks: WorkItem[] = [];
+                    // let match: RegExpExecArray = null;
+                    // while ( match = ISSUE_REGEX.exec( tasksString ) )
+                    // {
+                    //     if ( match )
+                    //     {
+                    //         tasks.push( {
+                    //             display: match.length > 0 ? match[ 0 ] : null,
+                    //             id: match.length > 1 ? +match[ 1 ] : 0
+                    //         } );
+                    //     }
+                    // }
+                    // commit.workItems = tasks.filter( i => i.display );
                 }
             }
 
