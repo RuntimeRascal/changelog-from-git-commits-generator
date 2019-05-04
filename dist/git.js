@@ -41,7 +41,8 @@ var version_1 = require("./version");
     %s 	    Subject
 */
 var SUBJECT_PATTERN_REGEX = /^(\w*)(?:\(([^)]*?)\)|):(.*?(?:\[([^\]]+?)\]|))\s*$/;
-var ISSUE_REGEX = /#(\d+)(?=[^\S\r\n]|[\n|\r\n]|,)/g;
+var ISSUE_REGEX = /#(\d+)/g;
+var ISSUE_REGEX2 = /#(\d+)(?=[^\S\r\n]|[\n|\r\n]|,)/g;
 var FORMATS = {
     NL: '%n',
     COMMIT_DETAILS_SEPARATOR: '===ENDCOMMIT===',
@@ -220,13 +221,15 @@ function gitCommits(from, to, latestVersion, tag) {
                 var tasksString = tasksLines.join('\n');
                 //tasksString = tasksString.replace( '#171', '#171, #64 #1, #67\n' );
                 var tasks = [];
+                debugger;
                 var match = null;
                 while (match = ISSUE_REGEX.exec(tasksString)) {
-                    if (match)
+                    if (match) {
                         tasks.push({
                             display: match.length > 0 ? match[0] : null,
                             id: match.length > 1 ? +match[1] : 0
                         });
+                    }
                 }
                 commit.workItems = tasks.filter(function (i) { return i.display; });
             }

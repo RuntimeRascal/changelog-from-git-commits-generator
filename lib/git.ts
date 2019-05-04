@@ -22,7 +22,8 @@ import Version from './version';
 */
 
 const SUBJECT_PATTERN_REGEX = /^(\w*)(?:\(([^)]*?)\)|):(.*?(?:\[([^\]]+?)\]|))\s*$/;
-const ISSUE_REGEX = /#(\d+)(?=[^\S\r\n]|[\n|\r\n]|,)/g;
+const ISSUE_REGEX = /#(\d+)/g;
+const ISSUE_REGEX2 = /#(\d+)(?=[^\S\r\n]|[\n|\r\n]|,)/g;
 const FORMATS = {
     NL: '%n',
     COMMIT_DETAILS_SEPARATOR: '===ENDCOMMIT===',
@@ -230,14 +231,17 @@ function gitCommits ( from: string, to: string, latestVersion: string, tag: stri
                     //tasksString = tasksString.replace( '#171', '#171, #64 #1, #67\n' );
 
                     let tasks: WorkItem[] = [];
+                    debugger;
                     let match: RegExpExecArray = null;
                     while ( match = ISSUE_REGEX.exec( tasksString ) )
                     {
                         if ( match )
+                        {
                             tasks.push( {
                                 display: match.length > 0 ? match[ 0 ] : null,
                                 id: match.length > 1 ? +match[ 1 ] : 0
                             } );
+                        }
                     }
                     commit.workItems = tasks.filter( i => i.display );
                 }
