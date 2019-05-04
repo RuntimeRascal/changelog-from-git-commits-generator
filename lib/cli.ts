@@ -17,26 +17,12 @@ let argv = yargs.help()
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'patch',
+    .option( 'version',
         {
-            alias: 'p',
+            alias: 'ver',
             default: false,
             required: false,
-            type: "boolean"
-        } as yargs.Options )
-    .option( 'major',
-        {
-            alias: 'm',
-            default: false,
-            required: false,
-            type: "boolean"
-        } as yargs.Options )
-    .option( 'minor',
-        {
-            alias: 'i',
-            default: false,
-            required: false,
-            type: "boolean"
+            type: "string"
         } as yargs.Options )
     .option( 'repoUrl',
         {
@@ -45,10 +31,17 @@ let argv = yargs.help()
             required: false,
             type: "string"
         } as yargs.Options )
+    .option( 'repoType',
+        {
+            default: 'git',
+            choices: [ 'git', 'vsts' ],
+            required: false,
+            type: "string"
+        } as yargs.Options )
     .option( 'file',
         {
             alias: 'f',
-            default: '',
+            default: 'CHANGELOG.md',
             required: false,
             type: "string"
         } as yargs.Options )
@@ -59,87 +52,99 @@ let argv = yargs.help()
             required: false,
             type: "string"
         } as yargs.Options )
-    .option( 'showUnparsableCommit',
+    .option( 'hideEmptyVersions',
         {
             default: false,
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'showFeat',
+    .option( 'hideUnparsableCommit',
         {
             default: true,
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'showFix',
+    .option( 'hideFeat',
         {
-            default: true,
+            default: false,
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'showPerf',
+    .option( 'hideAuthorName',
         {
-            default: true,
+            default: false,
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'showDocs',
+    .option( 'hideFixType',
         {
-            default: true,
+            default: false,
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'showStyle',
+    .option( 'hidePerfType',
         {
-            default: true,
+            default: false,
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'showRefactor',
+    .option( 'hideDocsType',
         {
-            default: true,
+            default: false,
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'showTest',
+    .option( 'hideStyleType',
         {
-            default: true,
+            default: false,
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'showChore',
+    .option( 'hideRefactorType',
         {
-            default: true,
+            default: false,
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'showBreaking',
+    .option( 'hideTestType',
         {
-            default: true,
+            default: false,
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'showBuild',
+    .option( 'hideChoreType',
         {
-            default: true,
+            default: false,
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'showCi',
+    .option( 'hideBreakingType',
         {
-            default: true,
+            default: false,
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'showRevert',
+    .option( 'hideBuildType',
         {
-            default: true,
+            default: false,
             required: false,
             type: "boolean"
         } as yargs.Options )
-    .option( 'showOther',
+    .option( 'hideCiType',
         {
-            default: true,
+            default: false,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'hideRevertType',
+        {
+            default: false,
+            required: false,
+            type: "boolean"
+        } as yargs.Options )
+    .option( 'hideOtherType',
+        {
+            default: false,
             required: false,
             type: "boolean"
         } as yargs.Options )

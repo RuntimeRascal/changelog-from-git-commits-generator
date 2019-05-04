@@ -4,6 +4,7 @@ import { ICommit, IOptions } from './interface';
 import Version from './version';
 import { resolve, join } from 'path';
 import * as fse from 'fs-extra';
+//import * as moment from 'moment';
 
 var links = {
     git: {
@@ -18,6 +19,8 @@ var links = {
         commit: `%s/_git/application/commit/%s`
     }
 }
+
+const DATE_FORMAT = 'dddd, MMMM Do YYYY, h:mm:ss a';
 
 function getMarkdown ( options: IOptions, commits: ICommit[] )
 {
@@ -36,16 +39,18 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
         .sort( ( a, b ) => b.key.compare( a.key ) )     // sort version largest to smallest
         .forEach( group =>
         {
-            let key = group.key;
+            // Dont write version if there are not any commits under it
+            if ( options.hideEmptyVersions && group.value && group.value.length > 0 )
+                return;
+
             content.push( `` );
             let firstCommit = linq( group.value ).firstOrDefault();
-            let date = '';
-            if ( firstCommit && firstCommit.authorDate )
-                date = firstCommit.authorDate;
-            else
-                date = ( new Date() ).toLocaleString();
 
-            content.push( `## [${ key.unparsed }](${ format( links[ options.repoType ].tag, options.repoUrl, key ) }) (${ date }) ` );
+            let date = firstCommit && firstCommit.authorDate
+                ? require( 'moment' )( firstCommit.authorDate ).format( DATE_FORMAT )
+                : require( 'moment' )( ( new Date() ).toLocaleString() ).format( DATE_FORMAT );
+
+            content.push( `## [${ group.key.unparsed }](${ format( links[ options.repoType ].tag, options.repoUrl, group.key ) }) (${ date }) ` );
 
             linq( group.value )
                 .groupBy( commit => commit.type )       // then we group by type
@@ -60,39 +65,31 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
                     if ( typeof commitType == 'undefined' || !commitType.key )
                         return;
 
-                    if ( commitType.key == 'feat' && !options.showFeat )
-                        return;
-                    if ( commitType.key == 'fix' && !options.showFix )
-                        return;
-                    if ( commitType.key == 'perf' && !options.showPerf )
-                        return;
-                    if ( commitType.key == 'docs' && !options.showDocs )
-                        return;
-                    if ( commitType.key == 'style' && !options.showStyle )
-                        return;
-                    if ( commitType.key == 'refactor' && !options.showRefactor )
-                        return;
-                    if ( commitType.key == 'test' && !options.showTest )
-                        return;
-                    if ( commitType.key == 'chore' && !options.showChore )
-                        return;
-                    if ( commitType.key == 'breaking' && !options.showBreaking )
-                        return;
-                    if ( commitType.key == 'build' && !options.showBuild )
-                        return;
-                    if ( commitType.key == 'ci' && !options.showCi )
-                        return;
-                    if ( commitType.key == 'revert' && !options.showRevert )
-                        return;
-                    if ( commitType.key == 'other' && !options.showOther )
+                    // Test to make sure we want to print these types of commits
+                    let hideOption = undefined;
+                    for ( const key in options )
+                    {
+                        if ( options.hasOwnProperty( key ) )
+                        {
+                            let regex = new RegExp( commitType.key, 'i' );
+                            if ( regex.test( key ) )
+                            {
+                                hideOption = options[ key ];
+                                break;
+                            }
+                        }
+                    }
+
+                    if ( hideOption )
                         return;
 
+                    // Write all commits for this given type group
                     content.push( `` );
                     content.push( `- ### ${ commitType.name }:` );
 
                     byTypes.forEach( t =>
                     {
-                        content.push( `   - \`(${ t.category })\` ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
+                        content.push( `   - ${ options.hideAuthorName ? '' : '<' + t.author + '> ' }\`(${ t.category })\` ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
                         if ( t.workItems && t.workItems.length > 0 )
                         {
                             content.push( '   - *CLOSES*' )
@@ -104,6 +101,21 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
                     } );
                     content.push( `` );
                 } );
+
+            // Write all unparsable commits
+            if ( !options.hideUnparsableCommit )
+            {
+                let unparsableCommits = linq( group.value ).where( c => c.unparsable ).toArray();
+                if ( unparsableCommits && unparsableCommits.length > 0 )
+                {
+                    content.push( `` );
+                    content.push( `- ### Unparsable Commits` );
+                    unparsableCommits.forEach( c =>
+                    {
+                        content.push( `   - ${ c.raw }` );
+                    } );
+                }
+            }
         } );
 
     content.push( `` );

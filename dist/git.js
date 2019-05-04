@@ -215,7 +215,7 @@ function gitCommits(from, to, latestVersion, tag) {
                     .toArray()
                     .join('\n');
                 var tasksString = tasksLines.join('\n');
-                tasksString = tasksString.replace('#171', '#171, #64 #1, #67\n');
+                //tasksString = tasksString.replace( '#171', '#171, #64 #1, #67\n' );
                 var tasks = [];
                 var match = null;
                 while (match = ISSUE_REGEX.exec(tasksString)) {

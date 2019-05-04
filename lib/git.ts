@@ -224,7 +224,7 @@ function gitCommits ( from: string, to: string, latestVersion: string, tag: stri
                         .join( '\n' );
 
                     let tasksString = tasksLines.join( '\n' );
-                    tasksString = tasksString.replace( '#171', '#171, #64 #1, #67\n' );
+                    //tasksString = tasksString.replace( '#171', '#171, #64 #1, #67\n' );
 
                     let tasks: WorkItem[] = [];
                     let match: RegExpExecArray = null;

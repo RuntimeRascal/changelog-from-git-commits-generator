@@ -1,7 +1,7 @@
 export enum RepoType
 {
-    git,
-    vsts
+    git = 'git',
+    vsts = 'vsts'
 }
 
 export type version = {
@@ -18,28 +18,27 @@ export type WorkItem = {
 
 export interface IOptions
 {
-    patch?: boolean;
-    major?: boolean;
-    minor?: boolean;
     version?: string;
     repoUrl?: string;
     repoType?: RepoType;
     file?: string;
     projectName?: string;
-    showUnparsableCommit?: boolean;
-    showFeat?: boolean;
-    showFix?: boolean;
-    showPerf?: boolean;
-    showDocs?: boolean;
-    showStyle?: boolean;
-    showRefactor?: boolean;
-    showTest?: boolean;
-    showChore?: boolean;
-    showBreaking?: boolean;
-    showBuild?: boolean;
-    showCi?: boolean;
-    showRevert?: boolean;
-    showOther?: boolean;
+    hideAuthorName?: boolean;
+    hideUnparsableCommit?: boolean;
+    hideEmptyVersions?: boolean;
+    hideFeatType?: boolean;
+    hideFixType?: boolean;
+    hidePerfType?: boolean;
+    hideDocsType?: boolean;
+    hideStyleType?: boolean;
+    hideRefactorType?: boolean;
+    hideTestType?: boolean;
+    hideChoreType?: boolean;
+    hideBreakingType?: boolean;
+    hideBuildType?: boolean;
+    hideCliType?: boolean;
+    hideRevertType?: boolean;
+    hideOtherType?: boolean;
 }
 
 export interface IVersion

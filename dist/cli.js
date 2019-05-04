@@ -14,23 +14,11 @@ var argv = yargs.help()
     required: false,
     type: "boolean"
 })
-    .option('patch', {
-    alias: 'p',
+    .option('version', {
+    alias: 'ver',
     default: false,
     required: false,
-    type: "boolean"
-})
-    .option('major', {
-    alias: 'm',
-    default: false,
-    required: false,
-    type: "boolean"
-})
-    .option('minor', {
-    alias: 'i',
-    default: false,
-    required: false,
-    type: "boolean"
+    type: "string"
 })
     .option('repoUrl', {
     alias: 'r',
@@ -38,9 +26,15 @@ var argv = yargs.help()
     required: false,
     type: "string"
 })
+    .option('repoType', {
+    default: 'git',
+    choices: ['git', 'vsts'],
+    required: false,
+    type: "string"
+})
     .option('file', {
     alias: 'f',
-    default: '',
+    default: 'CHANGELOG.md',
     required: false,
     type: "string"
 })
@@ -50,73 +44,83 @@ var argv = yargs.help()
     required: false,
     type: "string"
 })
-    .option('showUnparsableCommit', {
+    .option('hideEmptyVersions', {
     default: false,
     required: false,
     type: "boolean"
 })
-    .option('showFeat', {
+    .option('hideUnparsableCommit', {
     default: true,
     required: false,
     type: "boolean"
 })
-    .option('showFix', {
-    default: true,
+    .option('hideFeat', {
+    default: false,
     required: false,
     type: "boolean"
 })
-    .option('showPerf', {
-    default: true,
+    .option('hideAuthorName', {
+    default: false,
     required: false,
     type: "boolean"
 })
-    .option('showDocs', {
-    default: true,
+    .option('hideFixType', {
+    default: false,
     required: false,
     type: "boolean"
 })
-    .option('showStyle', {
-    default: true,
+    .option('hidePerfType', {
+    default: false,
     required: false,
     type: "boolean"
 })
-    .option('showRefactor', {
-    default: true,
+    .option('hideDocsType', {
+    default: false,
     required: false,
     type: "boolean"
 })
-    .option('showTest', {
-    default: true,
+    .option('hideStyleType', {
+    default: false,
     required: false,
     type: "boolean"
 })
-    .option('showChore', {
-    default: true,
+    .option('hideRefactorType', {
+    default: false,
     required: false,
     type: "boolean"
 })
-    .option('showBreaking', {
-    default: true,
+    .option('hideTestType', {
+    default: false,
     required: false,
     type: "boolean"
 })
-    .option('showBuild', {
-    default: true,
+    .option('hideChoreType', {
+    default: false,
     required: false,
     type: "boolean"
 })
-    .option('showCi', {
-    default: true,
+    .option('hideBreakingType', {
+    default: false,
     required: false,
     type: "boolean"
 })
-    .option('showRevert', {
-    default: true,
+    .option('hideBuildType', {
+    default: false,
     required: false,
     type: "boolean"
 })
-    .option('showOther', {
-    default: true,
+    .option('hideCiType', {
+    default: false,
+    required: false,
+    type: "boolean"
+})
+    .option('hideRevertType', {
+    default: false,
+    required: false,
+    type: "boolean"
+})
+    .option('hideOtherType', {
+    default: false,
     required: false,
     type: "boolean"
 })

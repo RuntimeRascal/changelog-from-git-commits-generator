@@ -11,9 +11,11 @@ function getPackageJson() {
 function getOptionsFromPackage(options) {
     var userPackage = getPackageJson();
     if (userPackage) {
-        var name = userPackage.name;
-        if (typeof name == 'string')
-            options.projectName = name;
+        if (!options.projectName) {
+            var name = userPackage.name;
+            if (typeof name == 'string')
+                options.projectName = name;
+        }
         if (!options.repoUrl) {
             var url = userPackage.repository && userPackage.repository.url;
             if (typeof url == 'string')
@@ -28,8 +30,9 @@ function getOptionsFromPackage(options) {
             if (repotype in interface_1.RepoType)
                 options.repoType = repotype;
         }
-        if (userPackage.version)
-            options.version = userPackage.version;
+        if (!options.version)
+            if (userPackage.version)
+                options.version = userPackage.version;
     }
 }
 exports.getOptionsFromPackage = getOptionsFromPackage;

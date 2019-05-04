@@ -2,15 +2,11 @@
     "name": "changelog-from-git-commits-generator",
     "version": "1.0.7",
     "description": "A simple module that generates a changelog in markdown from all your projects git commits",
-    "keywords": [
-        "changelog",
-        "changelog generator",
-        "markdown",
-        "git commits"
-    ],
+    "keywords": [ "changelog", "changelog generator", "markdown", "git commits" ],
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
-    "scripts": {
+    "scripts":
+    {
         "help": "node ./dist/cli.js --help",
         "cli": "node ./dist/cli.js --verbose",
         "new-changelog": "node ./dist/cli.js && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md'",
@@ -23,46 +19,56 @@
         "pretest": "npm run build",
         "test": "./node_modules/.bin/mocha test/*.spec.ts"
     },
-    "config": {
-        "commitizen": {
+    "config":
+    {
+        "commitizen":
+        {
             "path": "node_modules/cz-customizable"
         },
-        "cz-customizable": {
+        "cz-customizable":
+        {
             "config": "./.cz-config.js"
         }
     },
-    "husky": {
-        "hooks": {
+    "husky":
+    {
+        "hooks":
+        {
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
             "pre-applypatch": "node ./dist/cli.js && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md'"
         }
     },
-    "commitlint": {
-        "extends": [
-            "./commitlintrules"
-        ]
+    "commitlint":
+    {
+        "extends": [ "./commitlintrules" ]
     },
-    "bin": {
+    "bin":
+    {
         "changelog": "dist/cli.js"
     },
-    "repository": {
+    "repository":
+    {
         "type": "git",
         "url": "git+https://github.com/simpert/changelog-from-git-commits-generator.git"
     },
     "author": "tsimper <tommysimper@gmail.com> (https://twitter.com/TommySimper)",
     "license": "ISC",
-    "bugs": {
+    "bugs":
+    {
         "url": "https://github.com/simpert/changelog-from-git-commits-generator/issues"
     },
     "homepage": "https://github.com/simpert/changelog-from-git-commits-generator#readme",
-    "dependencies": {
+    "dependencies":
+    {
         "@types/fs-extra": "^5.0.5",
         "chalk": "^2.4.2",
         "fs-extra": "^7.0.1",
         "linq": "^3.2.0",
+        "moment": "^2.24.0",
         "yargs": "^12.0.5"
     },
-    "devDependencies": {
+    "devDependencies":
+    {
         "@commitlint/cli": "^7.5.2",
         "@types/chai": "^4.1.7",
         "@types/gulp": "^4.0.6",

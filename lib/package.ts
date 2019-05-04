@@ -15,9 +15,12 @@ function getOptionsFromPackage ( options: IOptions )
     let userPackage = getPackageJson();
     if ( userPackage )
     {
-        var name: string = userPackage.name;
-        if ( typeof name == 'string' )
-            options.projectName = name;
+        if ( !options.projectName )
+        {
+            var name: string = userPackage.name;
+            if ( typeof name == 'string' )
+                options.projectName = name;
+        }
 
         if ( !options.repoUrl )
         {
@@ -38,8 +41,9 @@ function getOptionsFromPackage ( options: IOptions )
                 options.repoType = <RepoType>repotype;
         }
 
-        if ( userPackage.version )
-            options.version = userPackage.version as string;
+        if ( !options.version )
+            if ( userPackage.version )
+                options.version = userPackage.version as string;
     }
 }
 
