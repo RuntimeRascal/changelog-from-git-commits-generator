@@ -20,7 +20,7 @@ var links = {
     }
 }
 
-const DATE_FORMAT = 'dddd, MMMM Do YYYY, h:mm:ss a';
+const DATE_FORMAT = 'MMM DD YYYY, h:mm a';
 
 function getMarkdown ( options: IOptions, commits: ICommit[] )
 {

@@ -20,7 +20,7 @@ var links = {
         commit: "%s/_git/application/commit/%s"
     }
 };
-var DATE_FORMAT = 'dddd, MMMM Do YYYY, h:mm:ss a';
+var DATE_FORMAT = 'MMM DD YYYY, h:mm a';
 function getMarkdown(options, commits) {
     var content = [];
     content.push("# [" + (options.projectName || 'Project Name') + "](" + util_1.format(links[options.repoType].home, options.repoUrl) + ")    ");
