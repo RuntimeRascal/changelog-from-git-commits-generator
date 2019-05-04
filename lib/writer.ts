@@ -89,7 +89,10 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
 
                     byTypes.forEach( t =>
                     {
-                        content.push( `   - ${ options.hideAuthorName ? '' : '<' + t.author + '> ' }\`(${ t.category })\` ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
+                        let author = '';
+                        if ( !options.hideAuthorName )
+                            author = `<font color="cyan">${ t.author }</font>`;
+                        content.push( `   - ${ author }\`(${ t.category })\` ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
                         if ( t.workItems && t.workItems.length > 0 )
                         {
                             content.push( '   - *CLOSES*' )

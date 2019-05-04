@@ -69,7 +69,10 @@ function getMarkdown(options, commits) {
             content.push("");
             content.push("- ### " + commitType.name + ":");
             byTypes.forEach(function (t) {
-                content.push("   - " + (options.hideAuthorName ? '' : '<' + t.author + '> ') + "`(" + t.category + ")` " + t.subject + " [" + t.hashAbbrev + "](" + util_1.format(links[options.repoType].commit, options.repoUrl, t.hash) + ")");
+                var author = '';
+                if (!options.hideAuthorName)
+                    author = "<font color=\"cyan\">" + t.author + "</font>";
+                content.push("   - " + author + "`(" + t.category + ")` " + t.subject + " [" + t.hashAbbrev + "](" + util_1.format(links[options.repoType].commit, options.repoUrl, t.hash) + ")");
                 if (t.workItems && t.workItems.length > 0) {
                     content.push('   - *CLOSES*');
                     t.workItems.forEach(function (wi) {
