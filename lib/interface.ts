@@ -18,6 +18,7 @@ export type WorkItem = {
 
 export interface IOptions
 {
+    verbose?: boolean;
     version?: string;
     repoUrl?: string;
     repoType?: RepoType;

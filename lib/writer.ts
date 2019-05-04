@@ -4,7 +4,6 @@ import { ICommit, IOptions, RepoType } from './interface';
 import Version from './version';
 import { resolve, join } from 'path';
 import * as fse from 'fs-extra';
-//import * as moment from 'moment';
 
 var links = {
     git: {

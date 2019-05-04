@@ -13,6 +13,7 @@ export declare type WorkItem = {
     id: number;
 };
 export interface IOptions {
+    verbose?: boolean;
     version?: string;
     repoUrl?: string;
     repoType?: RepoType;

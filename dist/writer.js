@@ -6,7 +6,6 @@ var interface_1 = require("./interface");
 var version_1 = require("./version");
 var path_1 = require("path");
 var fse = require("fs-extra");
-//import * as moment from 'moment';
 var links = {
     git: {
         home: "%s/blob/master/README.md",
