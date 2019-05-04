@@ -51,7 +51,7 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
                 ? require( 'moment' )( firstCommit.authorDate ).format( DATE_FORMAT )
                 : require( 'moment' )( ( new Date() ).toLocaleString() ).format( DATE_FORMAT );
 
-            thisgroupContent.push( `## [${ group.key.unparsed }](${ format( links[ options.repoType ].tag, options.repoUrl, group.key ) }) *( ${ date } )* ` );
+            thisgroupContent.push( `## [${ group.key.unparsed }](${ format( links[ options.repoType ].tag, options.repoUrl, group.key.unparsed ) }) *( ${ date } )* ` );
 
             let thisGroupCommitsToWrite = 0;
             linq( group.value )
