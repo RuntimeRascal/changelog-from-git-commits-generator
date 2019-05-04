@@ -37,7 +37,8 @@ const FORMATS = {
     SUBJECT: '===SUBJECT===',
     BODY: '===BODY===',
     BODY_END: '===ENDBODY===',
-    ISSUE_DELIMINATOR: 'ISSUES CLOSED:'
+    ISSUE_DELIMINATOR: 'ISSUES CLOSED:',
+    ISSUE_DELIMINATOR2: 'Closes'
 }
 var COMMIT_DETAILS_FORMAT = `${ FORMATS.HASH }%H${ FORMATS.NL }`
     + `${ FORMATS.HASHABBREV }%h${ FORMATS.NL }`
@@ -213,11 +214,13 @@ function gitCommits ( from: string, to: string, latestVersion: string, tag: stri
                 bodyLines = bodyLines.map( bl => bl.replace( FORMATS.BODY, '' ).replace( FORMATS.BODY_END, '' ) );
                 commit.body = bodyLines.join( '\n' );
 
-                let tasksLines = linq( bodyLines ).where( line => line.startsWith( FORMATS.ISSUE_DELIMINATOR ) ).toArray();
+                let tasksLines = linq( bodyLines )
+                    .where( line => line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR ) || line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR2 ) )
+                    .toArray();
                 if ( tasksLines && tasksLines.length > 0 )
                 {
                     commit.body = linq( bodyLines )
-                        .where( line => !line.startsWith( FORMATS.ISSUE_DELIMINATOR ) )
+                        .where( line => !line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR && !line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR2 ) ) )
                         .where( line => line )
                         .select( line => line.trim() )
                         .toArray()

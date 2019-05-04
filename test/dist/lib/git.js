@@ -59,7 +59,8 @@ var FORMATS = {
     SUBJECT: '===SUBJECT===',
     BODY: '===BODY===',
     BODY_END: '===ENDBODY===',
-    ISSUE_DELIMINATOR: 'ISSUES CLOSED:'
+    ISSUE_DELIMINATOR: 'ISSUES CLOSED:',
+    ISSUE_DELIMINATOR2: 'Closes'
 };
 var COMMIT_DETAILS_FORMAT = FORMATS.HASH + "%H" + FORMATS.NL
     + (FORMATS.HASHABBREV + "%h" + FORMATS.NL)
@@ -209,10 +210,12 @@ function gitCommits(from, to, latestVersion, tag) {
                 bodyLines = lines.slice(startIndex, endIndex);
             bodyLines = bodyLines.map(function (bl) { return bl.replace(FORMATS.BODY, '').replace(FORMATS.BODY_END, ''); });
             commit.body = bodyLines.join('\n');
-            var tasksLines = linq_1.from(bodyLines).where(function (line) { return line.startsWith(FORMATS.ISSUE_DELIMINATOR); }).toArray();
+            var tasksLines = linq_1.from(bodyLines)
+                .where(function (line) { return line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR) || line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR2); })
+                .toArray();
             if (tasksLines && tasksLines.length > 0) {
                 commit.body = linq_1.from(bodyLines)
-                    .where(function (line) { return !line.startsWith(FORMATS.ISSUE_DELIMINATOR); })
+                    .where(function (line) { return !line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR && !line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR2)); })
                     .where(function (line) { return line; })
                     .select(function (line) { return line.trim(); })
                     .toArray()
