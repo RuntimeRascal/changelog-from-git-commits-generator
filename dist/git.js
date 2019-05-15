@@ -213,7 +213,7 @@ function gitCommits(from, to, latestVersion, tag) {
                 .where(function (line) { return line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR) || line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR2); })
                 .toArray();
             commit.body = linq_1.from(bodyLines)
-                .where(function (line) { return !line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR) && !line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR2); })
+                .where(function (line) { return line.trim().indexOf(FORMATS.ISSUE_DELIMINATOR) <= 0 && line.trim().indexOf(FORMATS.ISSUE_DELIMINATOR2) <= 0; })
                 .toArray().join(' ');
             var tasksString = bodyLines.join('\n');
             var tasks = [];

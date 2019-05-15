@@ -1,7 +1,16 @@
 # [changelog-from-git-commits-generator](https://github.com/simpert/changelog-from-git-commits-generator/blob/master/README.md)    
 
 
-## [v1.0.17](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.17) *( May 15 2019, 12:11 pm )*   
+## [v1.0.18](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.18) *( May 15 2019, 1:27 pm )* 
+
+- ### Chores:
+   - *[tsimper](mailto:tommysimper@hotmail.com)***`(module)`**  cleanup commit body output and remove the empty body delimeter in unparsable commits [a8bac54](https://github.com/simpert/changelog-from-git-commits-generator/commit/a8bac5472e94071c4e1ef2fae08363e0d8832ef9)
+
+
+- ### Unparsable Commits
+   - 1.0.18 
+
+## [v1.0.17](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.17) *( May 15 2019, 12:11 pm )* 
 
 - ### Features:
    - *[tsimper](mailto:tommysimper@hotmail.com)***`(module)`**  filter out any duplicates commits that overlap tags [c29bae5](https://github.com/simpert/changelog-from-git-commits-generator/commit/c29bae57b83adfc14db846d96d2508c3021b2488)

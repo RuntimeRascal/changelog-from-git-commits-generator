@@ -224,7 +224,7 @@ function gitCommits ( from: string, to: string, latestVersion: string, tag: stri
                     .toArray();
 
                 commit.body = linq( bodyLines )
-                    .where( line => !line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR ) && !line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR2 ) )
+                    .where( line => line.trim().indexOf( FORMATS.ISSUE_DELIMINATOR ) <= 0 && line.trim().indexOf( FORMATS.ISSUE_DELIMINATOR2 ) <= 0 )
                     .toArray().join( ' ' );
 
                 let tasksString = bodyLines.join( '\n' );
