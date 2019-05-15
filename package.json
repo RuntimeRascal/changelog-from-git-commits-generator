@@ -1,6 +1,6 @@
 {
     "name": "changelog-from-git-commits-generator",
-    "version": "1.0.16",
+    "version": "1.0.17",
     "description": "A simple module that generates a changelog in markdown from all your projects git commits",
     "keywords": [
         "changelog",
