@@ -102,7 +102,18 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
                             thisgroupContent.push( `   - ${ author }**\`(${ t.category })\`** ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
 
                             if ( !options.hideCommitBody && typeof t.body != 'undefined' && t.body.length > 0 )
-                                thisgroupContent.push( `      > ${ t.body }  ` );
+                            {
+                                if ( t.body.indexOf( '`' ) != -1 )
+                                {
+                                    thisgroupContent.push( `      > ${ t.body }  ` );
+                                } else
+                                {
+                                    thisgroupContent.push( `      > \`\`\`` );
+                                    thisgroupContent.push( `      >${ t.body }  ` );
+                                    thisgroupContent.push( `      > \`\`\`` );
+                                }
+
+                            }
 
                             if ( t.workItems && t.workItems.length > 0 )
                             {

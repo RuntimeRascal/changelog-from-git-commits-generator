@@ -1,12 +1,23 @@
 # [changelog-from-git-commits-generator](https://github.com/simpert/changelog-from-git-commits-generator/blob/master/README.md)    
 
 
-## [v1.0.19](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.19) *( May 15 2019, 2:38 pm )* 
+## [v1.0.20](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.20) *( May 15 2019, 3:29 pm )* 
+
+- ### Chores:
+   - *[tsimper](mailto:tommysimper@hotmail.com)***`(module)`**  fixed bug filtering issues from bod [86008a7](https://github.com/simpert/changelog-from-git-commits-generator/commit/86008a76715b45f48c5c181e9a68a770172ca726)
+
+
+- ### Unparsable Commits
+   - 1.0.20 
+
+## [v1.0.19](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.19) *( May 15 2019, 2:38 pm )*  
 
 - ### Chores:
    - *[tsimper](mailto:tommysimper@hotmail.com)***`(module)`**  remove empty double spaces from commit body and remove newlines with single space [a29b92d](https://github.com/simpert/changelog-from-git-commits-generator/commit/a29b92d0a756f81032a5a9a44d1987884a3b69e2)
    - *[tsimper](mailto:tommysimper@hotmail.com)***`(module)`**  filter out 'ISSUE' lines from commit body [e3f16b5](https://github.com/simpert/changelog-from-git-commits-generator/commit/e3f16b54c74b3f4235639051973f8eb7bb6e6b87)
-      > When the body contains work item links or issue numbers these line needed to not show in body in output  
+      > ```
+      >When the body contains work item links or issue numbers these line needed to not show in body in output  
+      > ```
       - *CLOSES ISSUES*
          > - [#21](https://github.com/simpert/changelog-from-git-commits-generator/issues/21)
 
@@ -27,7 +38,9 @@
 
 - ### Features:
    - *[tsimper](mailto:tommysimper@hotmail.com)***`(module)`**  filter out any duplicates commits that overlap tags [c29bae5](https://github.com/simpert/changelog-from-git-commits-generator/commit/c29bae57b83adfc14db846d96d2508c3021b2488)
-      > some commits were showing up twice under a tag range as well between last tag and head these duplicate commits are now removed so commit is only added if not allready in the all commits array  
+      > ```
+      >some commits were showing up twice under a tag range as well between last tag and head these duplicate commits are now removed so commit is only added if not allready in the all commits array  
+      > ```
 
 
 - ### Unparsable Commits
