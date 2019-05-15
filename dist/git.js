@@ -209,12 +209,10 @@ function gitCommits(from, to, latestVersion, tag) {
             else
                 bodyLines = lines.slice(startIndex, endIndex);
             bodyLines = bodyLines.map(function (bl) { return bl.replace(FORMATS.BODY, '').replace(FORMATS.BODY_END, ''); });
+            commit.body = bodyLines.join(' ').trim();
             var tasksLines = linq_1.from(bodyLines)
                 .where(function (line) { return line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR) || line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR2); })
                 .toArray();
-            commit.body = bodyLines
-                .filter(function (line) { return line.trim().indexOf(FORMATS.ISSUE_DELIMINATOR) < 0 && line.trim().indexOf(FORMATS.ISSUE_DELIMINATOR2) < 0; })
-                .join(' ').trim();
             var tasksString = bodyLines.join('\n');
             var tasks = [];
             var match = null;
@@ -229,11 +227,10 @@ function gitCommits(from, to, latestVersion, tag) {
             commit.workItems = tasks.filter(function (i) { return i.display; });
             if (tasksLines && tasksLines.length > 0) {
                 commit.body = linq_1.from(bodyLines)
-                    .where(function (line) { return !line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR && !line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR2)); })
-                    .where(function (line) { return line; })
-                    .select(function (line) { return line.trim(); })
+                    .where(function (line) { return !line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR) && !line.trim().startsWith(FORMATS.ISSUE_DELIMINATOR2); })
                     .toArray()
-                    .join('\n');
+                    .join(' ')
+                    .trim();
             }
         }
         var allready = commits.find(function (c) { return c.hashAbbrev == commit.hashAbbrev; });

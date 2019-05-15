@@ -218,14 +218,11 @@ function gitCommits ( from: string, to: string, latestVersion: string, tag: stri
 
                 bodyLines = bodyLines.map( bl => bl.replace( FORMATS.BODY, '' ).replace( FORMATS.BODY_END, '' ) );
 
+                commit.body = bodyLines.join( ' ' ).trim();
 
                 let tasksLines = linq( bodyLines )
                     .where( line => line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR ) || line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR2 ) )
                     .toArray();
-
-                commit.body = bodyLines
-                    .filter( line => line.trim().indexOf( FORMATS.ISSUE_DELIMINATOR ) < 0 && line.trim().indexOf( FORMATS.ISSUE_DELIMINATOR2 ) < 0 )
-                    .join( ' ' ).trim();
 
                 let tasksString = bodyLines.join( '\n' );
                 let tasks: WorkItem[] = [];
@@ -245,11 +242,10 @@ function gitCommits ( from: string, to: string, latestVersion: string, tag: stri
                 if ( tasksLines && tasksLines.length > 0 )
                 {
                     commit.body = linq( bodyLines )
-                        .where( line => !line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR && !line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR2 ) ) )
-                        .where( line => line )
-                        .select( line => line.trim() )
+                        .where( line => !line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR ) && !line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR2 ) )
                         .toArray()
-                        .join( '\n' );
+                        .join( ' ' )
+                        .trim();
                 }
             }
             var allready = commits.find( c => c.hashAbbrev == commit.hashAbbrev );
