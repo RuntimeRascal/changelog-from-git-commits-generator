@@ -217,11 +217,15 @@ function gitCommits ( from: string, to: string, latestVersion: string, tag: stri
                     bodyLines = lines.slice( startIndex, endIndex );
 
                 bodyLines = bodyLines.map( bl => bl.replace( FORMATS.BODY, '' ).replace( FORMATS.BODY_END, '' ) );
-                commit.body = bodyLines.join( '\n' );
+
 
                 let tasksLines = linq( bodyLines )
                     .where( line => line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR ) || line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR2 ) )
                     .toArray();
+
+                commit.body = linq( bodyLines )
+                    .where( line => !line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR ) && !line.trim().startsWith( FORMATS.ISSUE_DELIMINATOR2 ) )
+                    .toArray().join( ' ' );
 
                 let tasksString = bodyLines.join( '\n' );
                 let tasks: WorkItem[] = [];

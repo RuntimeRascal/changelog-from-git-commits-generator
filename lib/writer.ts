@@ -102,9 +102,8 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
                             thisgroupContent.push( `   - ${ author }**\`(${ t.category })\`** ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
 
                             if ( !options.hideCommitBody && typeof t.body != 'undefined' && t.body.length > 0 )
-                            {
-                                thisgroupContent.push( `      > ${ '```' } ${ t.body } ${ '```' }  ` );
-                            }
+                                thisgroupContent.push( `      > ${ t.body }  ` );
+
                             if ( t.workItems && t.workItems.length > 0 )
                             {
                                 if ( options.repoType == RepoType.git )
@@ -133,7 +132,7 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
                     unparsableCommits.forEach( c =>
                     {
                         // thisGroupCommitsToWrite = thisGroupCommitsToWrite + 1;
-                        let rawContent = `${ c.subject || 'empty commit subject' } - ${ c.body || 'empty commit body' }`;
+                        let rawContent = `${ c.subject || 'empty commit subject' } ${ c.body || '' }`;
                         thisgroupContent.push( `   - ${ rawContent }` );
                     } );
                 }

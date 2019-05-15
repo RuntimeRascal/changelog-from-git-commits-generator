@@ -100,9 +100,8 @@ function getMarkdown(options, commits) {
                     //author = `*<font color="cyan">[${ t.author }](${ t.authorEmail })</font>*`;
                     thisGroupCommitsToWrite = thisGroupCommitsToWrite + 1;
                     thisgroupContent.push("   - " + author + "**`(" + t.category + ")`** " + t.subject + " [" + t.hashAbbrev + "](" + util_1.format(links[options.repoType].commit, options.repoUrl, t.hash) + ")");
-                    if (!options.hideCommitBody && typeof t.body != 'undefined' && t.body.length > 0) {
-                        thisgroupContent.push("      > " + '```' + " " + t.body + " " + '```' + "  ");
-                    }
+                    if (!options.hideCommitBody && typeof t.body != 'undefined' && t.body.length > 0)
+                        thisgroupContent.push("      > " + t.body + "  ");
                     if (t.workItems && t.workItems.length > 0) {
                         if (options.repoType == interface_1.RepoType.git)
                             thisgroupContent.push('      - *CLOSES ISSUES*');
@@ -124,7 +123,7 @@ function getMarkdown(options, commits) {
                 thisgroupContent.push("- ### Unparsable Commits");
                 unparsableCommits.forEach(function (c) {
                     // thisGroupCommitsToWrite = thisGroupCommitsToWrite + 1;
-                    var rawContent = (c.subject || 'empty commit subject') + " - " + (c.body || 'empty commit body');
+                    var rawContent = (c.subject || 'empty commit subject') + " " + (c.body || '');
                     thisgroupContent.push("   - " + rawContent);
                 });
             }

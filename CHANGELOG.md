@@ -1,6 +1,16 @@
 # [changelog-from-git-commits-generator](https://github.com/simpert/changelog-from-git-commits-generator/blob/master/README.md)    
 
 
+## [v1.0.17](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.17) *( May 15 2019, 12:11 pm )*   
+
+- ### Features:
+   - *[tsimper](mailto:tommysimper@hotmail.com)***`(module)`**  filter out any duplicates commits that overlap tags [c29bae5](https://github.com/simpert/changelog-from-git-commits-generator/commit/c29bae57b83adfc14db846d96d2508c3021b2488)
+      > some commits were showing up twice under a tag range as well between last tag and head these duplicate commits are now removed so commit is only added if not allready in the all commits array   
+
+
+- ### Unparsable Commits
+   - 1.0.17 
+
 ## [v1.0.16](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.16) *( May 04 2019, 5:52 pm )* 
 
 - ### Bug Fixes:
@@ -8,7 +18,7 @@
 
 
 - ### Unparsable Commits
-   - 1.0.16 - empty commit body
+   - 1.0.16 
 
 ## [v1.0.15](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.15) *( May 04 2019, 5:35 pm )* 
 
@@ -17,7 +27,7 @@
 
 
 - ### Unparsable Commits
-   - 1.0.15 - empty commit body
+   - 1.0.15 
 
 ## [v1.0.14](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.14) *( May 04 2019, 4:58 pm )* 
 
@@ -26,7 +36,7 @@
 
 
 - ### Unparsable Commits
-   - 1.0.14 - empty commit body
+   - 1.0.14 
 
 ## [v1.0.13](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.13) *( May 04 2019, 3:34 pm )* 
 
@@ -35,7 +45,7 @@
 
 
 - ### Unparsable Commits
-   - 1.0.13 - empty commit body
+   - 1.0.13 
 
 ## [v1.0.12](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.12) *( May 04 2019, 3:20 pm )* 
 
@@ -45,7 +55,7 @@
 
 
 - ### Unparsable Commits
-   - 1.0.12 - empty commit body
+   - 1.0.12 
 
 ## [v1.0.11](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.11) *( May 04 2019, 2:54 pm )* 
 
@@ -54,7 +64,7 @@
 
 
 - ### Unparsable Commits
-   - 1.0.11 - empty commit body
+   - 1.0.11 
 
 ## [v1.0.10](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.10) *( May 04 2019, 2:30 pm )* 
 
@@ -95,17 +105,16 @@
 
 
 - ### Unparsable Commits
-   - 1.0.10 - empty commit body
-   - 1.0.9 - empty commit body
-   - 1.0.8 - empty commit body
-   - 1.0.7 - empty commit body
-   - 1.0.6 - empty commit body
-   - 1.0.5 - empty commit body
-   - 1.0.4 - empty commit body
-   - 1.0.3 - empty commit body
-   - 1.0.2 - empty commit body
-   - Merge tag '1.0.1' into develop - initial release with cli
-
+   - 1.0.10 
+   - 1.0.9 
+   - 1.0.8 
+   - 1.0.7 
+   - 1.0.6 
+   - 1.0.5 
+   - 1.0.4 
+   - 1.0.3 
+   - 1.0.2 
+   - Merge tag '1.0.1' into develop initial release with cli 
 
 ## [1.0.0](https://github.com/simpert/changelog-from-git-commits-generator/tags/1.0.0) *( Apr 15 2019, 8:10 pm )* 
 
@@ -121,4 +130,4 @@
 
 
 - ### Unparsable Commits
-   - Merge branch 'release/1.0.1' - empty commit body
+   - Merge branch 'release/1.0.1'
