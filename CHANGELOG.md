@@ -1,6 +1,17 @@
 # [changelog-from-git-commits-generator](https://github.com/simpert/changelog-from-git-commits-generator/blob/master/README.md)    
 
 
+## [1.0.18](https://github.com/simpert/changelog-from-git-commits-generator/tags/1.0.18) *( May 15 2019, 2:12 pm )* 
+
+- ### Chores:
+   - *[tsimper](mailto:tommysimper@hotmail.com)***`(module)`**  filter out 'ISSUE' lines from commit body [e3f16b5](https://github.com/simpert/changelog-from-git-commits-generator/commit/e3f16b54c74b3f4235639051973f8eb7bb6e6b87)
+      > When the body contains work item links or issue numbers these line needed to not show in body in
+output
+ISSUES CLOSED: #21  
+      - *CLOSES ISSUES*
+         > - [#21](https://github.com/simpert/changelog-from-git-commits-generator/issues/21)
+
+
 ## [v1.0.18](https://github.com/simpert/changelog-from-git-commits-generator/tags/v1.0.18) *( May 15 2019, 1:27 pm )* 
 
 - ### Chores:
@@ -14,7 +25,6 @@
 
 - ### Features:
    - *[tsimper](mailto:tommysimper@hotmail.com)***`(module)`**  filter out any duplicates commits that overlap tags [c29bae5](https://github.com/simpert/changelog-from-git-commits-generator/commit/c29bae57b83adfc14db846d96d2508c3021b2488)
-      > some commits were showing up twice under a tag range as well between last tag and head these duplicate commits are now removed so commit is only added if not allready in the all commits array   
 
 
 - ### Unparsable Commits
@@ -123,7 +133,7 @@
    - 1.0.4 
    - 1.0.3 
    - 1.0.2 
-   - Merge tag '1.0.1' into develop initial release with cli 
+   - Merge tag '1.0.1' into develop 
 
 ## [1.0.0](https://github.com/simpert/changelog-from-git-commits-generator/tags/1.0.0) *( Apr 15 2019, 8:10 pm )* 
 
