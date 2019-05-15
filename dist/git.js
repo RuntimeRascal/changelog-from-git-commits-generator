@@ -135,6 +135,7 @@ function gitAllCommits(options) {
             commits.push.apply(commits, __spread(gitCommits(from, to, version, to)));
         }
     }
+    commits = linq_1.from(commits).distinct(function (c) { return c.hashAbbrev; }).toArray();
     return commits;
 }
 exports.gitAllCommits = gitAllCommits;
@@ -150,11 +151,12 @@ function gitCommits(from, to, latestVersion, tag) {
     // if ( versionMatch && versionMatch[ 0 ] )
     //     latestVersion = versionMatch[ 0 ];
     var ver = new version_1.default(latestVersion);
-    var commits = rawGitCommits
+    var commits = [];
+    rawGitCommits
         .split(FORMATS.COMMIT_DETAILS_SEPARATOR)
-        .map(function (raw) {
+        .forEach(function (raw) {
         if (!raw)
-            return null;
+            return;
         var lines = raw.split('\n');
         var commit = new Commit();
         commit.tag = tag;
@@ -230,25 +232,14 @@ function gitCommits(from, to, latestVersion, tag) {
                     .select(function (line) { return line.trim(); })
                     .toArray()
                     .join('\n');
-                //let tasksString = tasksLines.join( '\n' );
-                //tasksString = tasksString.replace( '#171', '#171, #64 #1, #67\n' );
-                // let tasks: WorkItem[] = [];
-                // let match: RegExpExecArray = null;
-                // while ( match = ISSUE_REGEX.exec( tasksString ) )
-                // {
-                //     if ( match )
-                //     {
-                //         tasks.push( {
-                //             display: match.length > 0 ? match[ 0 ] : null,
-                //             id: match.length > 1 ? +match[ 1 ] : 0
-                //         } );
-                //     }
-                // }
-                // commit.workItems = tasks.filter( i => i.display );
             }
         }
-        return commit;
-    }).filter(function (c) {
+        var allready = commits.find(function (c) { return c.hashAbbrev == commit.hashAbbrev; });
+        if (allready && allready.hashAbbrev)
+            return;
+        commits.push(commit);
+    });
+    commits = commits.filter(function (c) {
         if (!c)
             return false;
         return true;

@@ -60,9 +60,10 @@ function getMarkdown(options, commits) {
             return;
         thisgroupContent.push("");
         var firstCommit = linq_1.from(group.value).firstOrDefault();
+        var moment = require('moment');
         var date = firstCommit && firstCommit.authorDate
-            ? require('moment')(firstCommit.authorDate).format(DATE_FORMAT)
-            : require('moment')((new Date()).toLocaleString()).format(DATE_FORMAT);
+            ? moment(new Date(firstCommit.authorDate)).format(DATE_FORMAT)
+            : moment().format(DATE_FORMAT);
         thisgroupContent.push("## [" + group.key.unparsed + "](" + util_1.format(links[options.repoType].tag, options.repoUrl, group.key.unparsed) + ") *( " + date + " )* ");
         var thisGroupCommitsToWrite = 0;
         linq_1.from(group.value)
@@ -99,6 +100,9 @@ function getMarkdown(options, commits) {
                     //author = `*<font color="cyan">[${ t.author }](${ t.authorEmail })</font>*`;
                     thisGroupCommitsToWrite = thisGroupCommitsToWrite + 1;
                     thisgroupContent.push("   - " + author + "**`(" + t.category + ")`** " + t.subject + " [" + t.hashAbbrev + "](" + util_1.format(links[options.repoType].commit, options.repoUrl, t.hash) + ")");
+                    if (!options.hideCommitBody && typeof t.body != 'undefined' && t.body.length > 0) {
+                        thisgroupContent.push("      > " + '```' + " " + t.body + " " + '```' + "  ");
+                    }
                     if (t.workItems && t.workItems.length > 0) {
                         if (options.repoType == interface_1.RepoType.git)
                             thisgroupContent.push('      - *CLOSES ISSUES*');

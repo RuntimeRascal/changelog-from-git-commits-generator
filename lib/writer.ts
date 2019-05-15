@@ -13,7 +13,7 @@ var links = {
         commit: `%s/commit/%s`
     }, vsts: {
         home: `%s`,
-        tag: `%s/_git/application?version=GT%s`,
+        tag: `%s/_git/application?version=GT%s`,/** vsts allows projects to have multiple repos, in this string application is the repo name. TODO: need to parameterize the repo name */
         issue: `%s/_workitems/edit/%s`,
         commit: `%s/_git/application/commit/%s`
     }
@@ -47,9 +47,10 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
             thisgroupContent.push( `` );
             let firstCommit = linq( group.value ).firstOrDefault();
 
+            const moment = require( 'moment' );
             let date = firstCommit && firstCommit.authorDate
-                ? require( 'moment' )( firstCommit.authorDate ).format( DATE_FORMAT )
-                : require( 'moment' )( ( new Date() ).toLocaleString() ).format( DATE_FORMAT );
+                ? moment( new Date( firstCommit.authorDate ) ).format( DATE_FORMAT )
+                : moment().format( DATE_FORMAT );
 
             thisgroupContent.push( `## [${ group.key.unparsed }](${ format( links[ options.repoType ].tag, options.repoUrl, group.key.unparsed ) }) *( ${ date } )* ` );
 
@@ -99,6 +100,11 @@ function getMarkdown ( options: IOptions, commits: ICommit[] )
                             //author = `*<font color="cyan">[${ t.author }](${ t.authorEmail })</font>*`;
                             thisGroupCommitsToWrite = thisGroupCommitsToWrite + 1;
                             thisgroupContent.push( `   - ${ author }**\`(${ t.category })\`** ${ t.subject } [${ t.hashAbbrev }](${ format( links[ options.repoType ].commit, options.repoUrl, t.hash ) })` );
+
+                            if ( !options.hideCommitBody && typeof t.body != 'undefined' && t.body.length > 0 )
+                            {
+                                thisgroupContent.push( `      > ${ '```' } ${ t.body } ${ '```' }  ` );
+                            }
                             if ( t.workItems && t.workItems.length > 0 )
                             {
                                 if ( options.repoType == RepoType.git )

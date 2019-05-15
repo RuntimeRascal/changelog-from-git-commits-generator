@@ -35,6 +35,7 @@ export interface IOptions {
     hideCliType?: boolean;
     hideRevertType?: boolean;
     hideOtherType?: boolean;
+    hideCommitBody?: boolean;
 }
 export interface IVersion {
     major: number;

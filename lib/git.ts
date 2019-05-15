@@ -118,6 +118,8 @@ function gitAllCommits ( options: IOptions )
         }
     }
 
+    commits = linq( commits ).distinct( c => c.hashAbbrev ).toArray();
+
     return commits;
 }
 
@@ -139,11 +141,13 @@ function gitCommits ( from: string, to: string, latestVersion: string, tag: stri
 
     let ver = new Version( latestVersion );
 
-    const commits = rawGitCommits
+    var commits: Commit[] = [];
+
+    rawGitCommits
         .split( FORMATS.COMMIT_DETAILS_SEPARATOR )
-        .map( ( raw ) =>
+        .forEach( ( raw ) =>
         {
-            if ( !raw ) return null;
+            if ( !raw ) return;
 
             let lines = raw.split( '\n' );
             let commit = new Commit();
@@ -242,34 +246,22 @@ function gitCommits ( from: string, to: string, latestVersion: string, tag: stri
                         .select( line => line.trim() )
                         .toArray()
                         .join( '\n' );
-
-                    //let tasksString = tasksLines.join( '\n' );
-                    //tasksString = tasksString.replace( '#171', '#171, #64 #1, #67\n' );
-
-                    // let tasks: WorkItem[] = [];
-                    // let match: RegExpExecArray = null;
-                    // while ( match = ISSUE_REGEX.exec( tasksString ) )
-                    // {
-                    //     if ( match )
-                    //     {
-                    //         tasks.push( {
-                    //             display: match.length > 0 ? match[ 0 ] : null,
-                    //             id: match.length > 1 ? +match[ 1 ] : 0
-                    //         } );
-                    //     }
-                    // }
-                    // commit.workItems = tasks.filter( i => i.display );
                 }
             }
+            var allready = commits.find( c => c.hashAbbrev == commit.hashAbbrev );
+            if ( allready && allready.hashAbbrev )
+                return;
 
-            return commit;
-        } ).filter( ( c ) => 
-        {
-            if ( !c )
-                return false;
+            commits.push( commit );
+        } );
 
-            return true;
-        } )
+    commits = commits.filter( ( c ) => 
+    {
+        if ( !c )
+            return false;
+
+        return true;
+    } )
 
     return commits;
 }

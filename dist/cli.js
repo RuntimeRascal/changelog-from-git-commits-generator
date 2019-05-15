@@ -157,6 +157,12 @@ var argv = builder
     type: "boolean",
     description: 'Hide commits typed as \'Other\' from output'
 })
+    .option('hideCommitBody', {
+    default: false,
+    required: false,
+    type: "boolean",
+    description: 'Hide the commit body contents from output'
+})
     .epilogue('for more information goto: https://github.com/simpert/changelog-from-git-commits-generator or https://www.npmjs.com/package/changelog-from-git-commits-generator')
     .version(packageJson.version)
     .example('changelog --file MY_CHANGELOG.md', 'Will create "MY_CHANGELOG.md" in root with all default settings')
